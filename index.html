@@ -51,6 +51,7 @@ tr.alert{background:#fef2f2}tr.alert:hover{background:#fee2e2}
 <button class="btn btn-avis" id="btnAvis" onclick="runAvis()">↻ Actualiser AVIS</button>
 <button class="btn btn-rank" id="btnRank" onclick="runRank()">📍 Classements</button>
 <button class="btn btn-rank" id="btnC3" onclick="runC3()">🗓 3 jours</button>
+<button class="btn btn-rank" id="btnRecale" onclick="recaleBase()" style="display:none;border-color:#c2552b;color:#c2552b">⚖ Recaler la base</button>
 </div></div>
 <div class="msg" id="msg"></div>
 <div class="wrap">
@@ -233,7 +234,24 @@ async function runC3(){
       render();
     }catch(e){}
   }
+  if(location.search.includes('admin'))$('btnRecale').style.display='';
   msg('3 jours ✓ — avant-hier '+t2+' · hier '+t1+' · aujourd\'hui '+t0+' (avis visibles sur Google)');
+  b.disabled=false;
+}
+
+async function recaleBase(){
+  if(!C3){msg('Lance d\'abord le comptage 3 jours.');return}
+  const deltas={};let tot=0;
+  for(const k in C3){const c=C3[k];if(c&&!c.err){const d=(c.j0||0)+(c.j1||0)+(c.j2||0);if(d>0){deltas[k]=d;tot+=d;}}}
+  if(!tot){msg('Rien à recaler — 0 avis comptés sur 3 jours.');return}
+  if(!confirm('Décaler la base de '+tot+' avis au total (les avis des 3 derniers jours comptent dans l\'objectif) ?'))return;
+  const b=$('btnRecale');b.disabled=true;msg('Recalage en cours…');
+  try{
+    const r=await fetch('/.netlify/functions/setbase',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({deltas})});
+    const j=await r.json();
+    if(j.ok){msg('Base recalée (-'+tot+') ✓ — rechargement…');await load();}
+    else msg('Erreur recalage');
+  }catch(e){msg('Erreur recalage : '+e)}
   b.disabled=false;
 }
 </script></body></html>
