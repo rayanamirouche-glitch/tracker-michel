@@ -1,0 +1,7 @@
+{
+  "name": "tracker-antoine",
+  "version": "3.0.0",
+  "dependencies": {
+    "@netlify/blobs": "^7.4.0"
+  }
+}
