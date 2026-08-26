@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>R.Consulting — Compteur Michel · 3 jours</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111318;--muted:#9a9ea8;--line:#e2e3e6;--gold:#f59e0b;--terra:#c2552b;--ok:#0e9f6e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#fafafa;color:var(--ink);padding-bottom:50px}
+.header{position:sticky;top:0;z-index:10;background:rgba(250,250,250,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;gap:12px}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0}
+.h-t{flex:1;min-width:0}.h-name{font-weight:800;font-size:.95rem}
+.h-sub{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted)}
+.btn-go{background:var(--ink);color:#fff;border:0;border-radius:11px;padding:10px 16px;font-family:'DM Sans',sans-serif;font-weight:800;font-size:.8rem;cursor:pointer}
+.btn-go:disabled{opacity:.5}
+.wrap{max-width:860px;margin:0 auto;padding:16px 14px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.card .lbl{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.card .val{font-size:1.7rem;font-weight:900;letter-spacing:-1px;margin-top:4px}
+.card.today .val{background:linear-gradient(135deg,var(--terra),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.prog{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);margin:8px 2px}
+table{width:100%;border-collapse:separate;border-spacing:0 6px}
+th{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;text-align:left;padding:0 10px}
+th.num,td.num{text-align:center;width:70px}
+tr.row td{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px}
+tr.row td:first-child{border-left:1px solid var(--line);border-radius:13px 0 0 13px}
+tr.row td:last-child{border-right:1px solid var(--line);border-radius:0 13px 13px 0}
+.fname{font-weight:700;font-size:.82rem}
+.fname a{color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--terra)}
+.fcity{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);margin-top:2px}
+td.num{font-family:'DM Mono',monospace;font-weight:800;font-size:.95rem}
+td.num.zero{color:#c9ccd2}
+td.num.hot{color:var(--ok)}
+.err{font-family:'DM Mono',monospace;font-size:.6rem;color:#d97706}
+.note{background:#fdf3ec;border:1px solid #f0d9c9;border-radius:12px;padding:11px 13px;font-size:.74rem;line-height:1.5;margin-top:14px;color:#7a4a2e}
+</style></head><body>
+<div class="header"><div class="logo">R.</div>
+<div class="h-t"><div class="h-name">Compteur Michel — avis postés</div><div class="h-sub">avant-hier · hier · aujourd'hui — lu depuis Google (dates réelles des avis)</div></div>
+<button class="btn-go" id="go" onclick="run()">↻ Compter</button></div>
+<div class="wrap">
+<div class="cards">
+<div class="card"><div class="lbl" id="l2">Avant-hier</div><div class="val" id="v2">—</div></div>
+<div class="card"><div class="lbl" id="l1">Hier</div><div class="val" id="v1">—</div></div>
+<div class="card today"><div class="lbl" id="l0">Aujourd'hui</div><div class="val" id="v0">—</div></div>
+</div>
+<div class="prog" id="prog">Clique sur « Compter » pour lancer la lecture des 18 fiches (~30-60 s)</div>
+<table><thead><tr><th>Fiche</th><th class="num">Avant-hier</th><th class="num">Hier</th><th class="num">Aujourd'hui</th><th class="num">Total fiche</th></tr></thead>
+<tbody id="tb"></tbody></table>
+<div class="note">Le comptage lit les avis <b>réellement visibles</b> sur Google avec leur date. Un avis posté mais pas encore rendu public par Google n'apparaît pas encore — les chiffres peuvent donc être un peu en dessous de ce que les bosseurs ont posté, ça se rattrape au comptage suivant. Chaque comptage consomme ~20-45 recherches SerpApi : pas de refresh en boucle 🙏</div>
+</div>
+<script>
+const N=18, STEP=3;
+let sums={j0:0,j1:0,j2:0};
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function cell(v){const cls=v===0?'zero':(v>0?'hot':'');return `<td class="num ${cls}">${v}</td>`}
+async function run(){
+  const go=document.getElementById('go');go.disabled=true;
+  document.getElementById('tb').innerHTML='';sums={j0:0,j1:0,j2:0};
+  ['v0','v1','v2'].forEach(id=>document.getElementById(id).textContent='…');
+  let doneN=0;
+  for(let s=0;s<N;s+=STEP){
+    document.getElementById('prog').textContent=`Lecture des fiches ${s+1}–${Math.min(s+STEP,N)} / ${N}…`;
+    try{
+      const r=await fetch(`/.netlify/functions/count?start=${s}&n=${STEP}`);
+      const j=await r.json();
+      if(j.days){
+        document.getElementById('l2').textContent='Avant-hier · '+j.days.j2.slice(5).split('-').reverse().join('/');
+        document.getElementById('l1').textContent='Hier · '+j.days.j1.slice(5).split('-').reverse().join('/');
+        document.getElementById('l0').textContent="Aujourd'hui · "+j.days.j0.slice(5).split('-').reverse().join('/');
+      }
+      for(const f of j.results){
+        doneN++;
+        const tr=document.createElement('tr');tr.className='row';
+        if(f.error){
+          tr.innerHTML=`<td><div class="fname"><a href="${f.link}" target="_blank" rel="noopener">${esc(f.name)}</a></div><div class="fcity">${esc(f.city)}</div><div class="err">⚠ ${esc(f.error)}</div></td><td class="num zero">—</td><td class="num zero">—</td><td class="num zero">—</td><td class="num zero">—</td>`;
+        }else{
+          sums.j0+=f.j0;sums.j1+=f.j1;sums.j2+=f.j2;
+          tr.innerHTML=`<td><div class="fname"><a href="${f.link}" target="_blank" rel="noopener">${esc(f.name)}</a></div><div class="fcity">${esc(f.city)}${f.total!=null?' · '+f.total+' avis au total':''}</div></td>${cell(f.j2)}${cell(f.j1)}${cell(f.j0)}<td class="num">${f.j0+f.j1+f.j2}</td>`;
+        }
+        document.getElementById('tb').appendChild(tr);
+        document.getElementById('v0').textContent=sums.j0;
+        document.getElementById('v1').textContent=sums.j1;
+        document.getElementById('v2').textContent=sums.j2;
+      }
+    }catch(e){
+      document.getElementById('prog').textContent='Erreur sur la vague '+(s/STEP+1)+' — relance.';
+    }
+  }
+  document.getElementById('prog').textContent=`Terminé — ${doneN} fiches lues · total 3 jours : ${sums.j0+sums.j1+sums.j2} avis`;
+  go.disabled=false;
+}
+</script></body></html>
