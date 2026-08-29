@@ -8,10 +8,30 @@ exports.handler = async (event) => {
   const q = event.queryStringParameters || {};
   const baseUrl = process.env.URL || ('https://' + ((event.headers && event.headers.host) || ''));
   try {
+    if (q.type === 'audit') {
+      const K = process.env.PLACES_API_KEY;
+      const store = getStore('tracker');
+      const ids = (await store.get('ids', { type: 'json' })) || {};
+      const out = [];
+      const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+      for (const f of FICHES) {
+        const pid = ids[f.name];
+        if (!pid) { out.push({ fiche: f.name, id: null, etat: 'NON_LIE' }); continue; }
+        try {
+          const u = 'https://places.googleapis.com/v1/places/' + pid + '?fields=displayName,rating,userRatingCount,formattedAddress&key=' + K;
+          const j = await fetch(u).then(r => r.json());
+          const gname = (j.displayName && j.displayName.text) || null;
+          const a = norm(f.name), b = norm(gname);
+          const match = !!gname && (a === b || a.includes(b) || b.includes(a));
+          out.push({ fiche: f.name, id: pid, google: gname, n: (typeof j.userRatingCount === 'number' ? j.userRatingCount : 0), adresse: j.formattedAddress || null, etat: match ? 'OK' : 'MAUVAISE_FICHE' });
+        } catch (e) { out.push({ fiche: f.name, id: pid, etat: 'ERREUR', err: String(e) }); }
+      }
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify(out, null, 1) };
+    }
     if (q.type === 'lookup') {
       const K = process.env.PLACES_API_KEY;
       const f = FICHES.find(x => x.name === q.name);
-      if (!f) return { statusCode: 400, body: JSON.stringify({ error: 'fiche not found', name: q.name }) };
+      if (!f) return { statusCode: 400, body: JSON.stringify({ error: 'fiche inconnue', name: q.name }) };
       const ll = f.ll.split(',').map(Number);
       const j = await fetch('https://places.googleapis.com/v1/places:searchText', {
         method: 'POST',
@@ -20,24 +40,21 @@ exports.handler = async (event) => {
       }).then(r => r.json());
       return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ fiche: f.name, results: (j.places || []).slice(0, 8) }, null, 1) };
     }
-    if (q.type === 'setid') {
+    if (q.type === 'setids') {
+      // Ecriture batch : un seul read-modify-write, sinon les appels concurrents
+      // s'ecrasent (le blob store est eventuellement coherent).
       const store = getStore('tracker');
+      let payload;
+      try { payload = JSON.parse(event.body || '{}'); } catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'body JSON invalide' }) }; }
       const ids = (await store.get('ids', { type: 'json' })) || {};
-      if (q.clear) {
-        const names = q.clear.split('|');
-        names.forEach(n => { delete ids[n]; });
-        await store.setJSON('ids', ids);
-        const base = (await store.get('base', { type: 'json' })) || {};
-        names.forEach(n => { delete base[n]; });
-        await store.setJSON('base', base);
-        return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, cleared: names }) };
-      }
-      if (q.name && q.id) {
-        ids[q.name] = q.id;
-        await store.setJSON('ids', ids);
-        return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, name: q.name, id: q.id }) };
-      }
-      return { statusCode: 400, body: JSON.stringify({ error: 'name+id or clear required' }) };
+      const base = (await store.get('base', { type: 'json' })) || {};
+      const set = payload.set || {};
+      const clear = payload.clear || [];
+      for (const n of clear) { delete ids[n]; delete base[n]; }
+      for (const [n, v] of Object.entries(set)) { ids[n] = v; }
+      await store.setJSON('ids', ids);
+      if (clear.length) await store.setJSON('base', base);
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, set: Object.keys(set).length, clear: clear.length, total_ids: Object.keys(ids).length }) };
     }
     if (q.type === 'diag') {
       const store = getStore('tracker');

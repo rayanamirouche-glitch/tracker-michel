@@ -41,7 +41,7 @@ async function resolveIds() {
         const j = await to(fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.id,places.displayName' },
-          body: JSON.stringify({ textQuery: q, locationBias: { circle: { center: { latitude: ll[0], longitude: ll[1] }, radius: 15000 } } })
+          body: JSON.stringify({ textQuery: q, locationBias: { circle: { center: { latitude: ll[0], longitude: ll[1] }, radius: 6000 } } })
         }).then(r => r.json()), 6500);
         const results = (j && j.places) || [];
         const m = pickMatch(results, r => r.displayName && r.displayName.text, t);
