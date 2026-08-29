@@ -8,6 +8,37 @@ exports.handler = async (event) => {
   const q = event.queryStringParameters || {};
   const baseUrl = process.env.URL || ('https://' + ((event.headers && event.headers.host) || ''));
   try {
+    if (q.type === 'lookup') {
+      const K = process.env.PLACES_API_KEY;
+      const f = FICHES.find(x => x.name === q.name);
+      if (!f) return { statusCode: 400, body: JSON.stringify({ error: 'fiche not found', name: q.name }) };
+      const ll = f.ll.split(',').map(Number);
+      const j = await fetch('https://places.googleapis.com/v1/places:searchText', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress' },
+        body: JSON.stringify({ textQuery: f.name, locationBias: { circle: { center: { latitude: ll[0], longitude: ll[1] }, radius: 5000 } } })
+      }).then(r => r.json());
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ fiche: f.name, results: (j.places || []).slice(0, 8) }, null, 1) };
+    }
+    if (q.type === 'setid') {
+      const store = getStore('tracker');
+      const ids = (await store.get('ids', { type: 'json' })) || {};
+      if (q.clear) {
+        const names = q.clear.split('|');
+        names.forEach(n => { delete ids[n]; });
+        await store.setJSON('ids', ids);
+        const base = (await store.get('base', { type: 'json' })) || {};
+        names.forEach(n => { delete base[n]; });
+        await store.setJSON('base', base);
+        return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, cleared: names }) };
+      }
+      if (q.name && q.id) {
+        ids[q.name] = q.id;
+        await store.setJSON('ids', ids);
+        return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, name: q.name, id: q.id }) };
+      }
+      return { statusCode: 400, body: JSON.stringify({ error: 'name+id or clear required' }) };
+    }
     if (q.type === 'diag') {
       const store = getStore('tracker');
       const ids = (await store.get('ids', { type: 'json' })) || {};
