@@ -129,12 +129,6 @@ async function snapAvisWave(start) {
   // peuvent plus s'ecraser : avec un blob unique relu-modifie-reecrit, le dernier
   // ecrivain effacait les fiches de l'autre, d'ou des totaux qui alternaient.
   await setJSON('avisbatch/' + today() + '/' + start, snap);
-  const base = await getJSON('base', {});
-  let newBase = false;
-  for (const [name, v] of Object.entries(snap)) {
-    if (base[name] == null && v && typeof v.n === 'number') { base[name] = v.n; newBase = true; }
-  }
-  if (newBase) await setJSON('base', base);
   return snap;
 }
 
