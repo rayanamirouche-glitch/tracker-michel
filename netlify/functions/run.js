@@ -22,7 +22,14 @@ exports.handler = async (event) => {
         erreur: j.error || j.fetch_error || null,
         statut: (j.search_metadata && j.search_metadata.status) || null,
         nb_resultats: rs.length,
-        top5: rs.slice(0, 5).map(r => r.title)
+        target: f.target,
+        position_trouvee: (() => {
+          const norm = s => (s || '').toLowerCase().replace(/[\u2018\u2019\u02BC\u0060\u00B4]/g, "'").normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[.\-]/g, ' ').replace(/\bsaint\b/g, 'st').replace(/\s+/g, ' ').trim();
+          const t = norm(f.target);
+          for (let i = 0; i < rs.length; i++) { const n = norm(rs[i].title); if (n === t || n.includes(t)) return i + 1; }
+          return null;
+        })(),
+        tous_les_titres: rs.map((r, i) => (i + 1) + '. ' + r.title)
       }, null, 1) };
     }
     if (q.type === 'audit') {
