@@ -52,9 +52,11 @@ exports.handler = async (event) => {
       const clear = payload.clear || [];
       for (const n of clear) { delete ids[n]; delete base[n]; }
       for (const [n, v] of Object.entries(set)) { ids[n] = v; }
+      const setBase = payload.base || {};
+      for (const [n, v] of Object.entries(setBase)) { base[n] = v; }
       await store.setJSON('ids', ids);
-      if (clear.length) await store.setJSON('base', base);
-      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, set: Object.keys(set).length, clear: clear.length, total_ids: Object.keys(ids).length }) };
+      if (clear.length || Object.keys(setBase).length) await store.setJSON('base', base);
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, set: Object.keys(set).length, base: Object.keys(payload.base || {}).length, clear: clear.length, total_ids: Object.keys(ids).length }) };
     }
     if (q.type === 'diag') {
       const store = getStore('tracker');

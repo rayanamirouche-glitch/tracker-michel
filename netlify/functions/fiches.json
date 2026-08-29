@@ -206,7 +206,7 @@
   "city": "La Gaude",
   "link": "https://maps.app.goo.gl/AFsRdURcvUFMUEWm7",
   "region": "Nice",
-  "obj": 20
+  "obj": 18
  },
  {
   "name": "Couvreur Carqueiranne Père Et Fils",
@@ -217,7 +217,7 @@
   "city": "Carqueiranne",
   "link": "https://maps.app.goo.gl/e1yUDdzp3Ev3AcUn6",
   "region": "Var",
-  "obj": 20
+  "obj": 19
  },
  {
   "name": "Pro Couvreur Charpentier Étanchéité Toit Terasse cavalaire",
@@ -239,7 +239,7 @@
   "city": "Wavre",
   "link": "https://maps.app.goo.gl/CvLq5t7KL8ecz4VYA",
   "region": "Belgique",
-  "obj": 30
+  "obj": 100
  },
  {
   "name": "Couvreur le Cannet 06",
@@ -250,7 +250,7 @@
   "city": "Le Cannet",
   "link": "https://maps.app.goo.gl/FTjpaxNKABtV9SGS8",
   "region": "Nice",
-  "obj": 20
+  "obj": 16
  },
  {
   "name": "Expert Toiture 06 & Fils",
@@ -261,7 +261,7 @@
   "city": "Menton",
   "link": "https://maps.app.goo.gl/D38Xqb8A6Jhq6Th76",
   "region": "Nice",
-  "obj": 40
+  "obj": 70
  },
  {
   "name": "Couvreur Toulon Dems",
@@ -327,7 +327,7 @@
   "city": "Cannes",
   "link": "https://maps.app.goo.gl/5dquwCrPTnpdNCTp8",
   "region": "Nice",
-  "obj": 15
+  "obj": 14
  },
  {
   "name": "Couvreur La Colle-Sur-Loup Expert 06",
@@ -338,7 +338,7 @@
   "city": "La Colle-sur-Loup",
   "link": "https://maps.app.goo.gl/8a6ZcfkDzGhU6Ygt8",
   "region": "Nice",
-  "obj": 30
+  "obj": 42
  },
  {
   "name": "Couvreur Sos Toiture",
@@ -371,7 +371,7 @@
   "city": "Hyères",
   "link": "https://maps.app.goo.gl/xUK36Tu9jVakLp8z8",
   "region": "Var",
-  "obj": 30
+  "obj": 40
  },
  {
   "name": "Toiture du canton 83",
