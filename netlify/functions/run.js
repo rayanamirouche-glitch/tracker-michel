@@ -8,6 +8,23 @@ exports.handler = async (event) => {
   const q = event.queryStringParameters || {};
   const baseUrl = process.env.URL || ('https://' + ((event.headers && event.headers.host) || ''));
   try {
+    if (q.type === 'rankdiag') {
+      const K = process.env.SERPAPI_KEY;
+      const i = parseInt(q.i || '0', 10);
+      const f = FICHES[i];
+      if (!f) return { statusCode: 400, body: JSON.stringify({ error: 'index hors bornes', total: FICHES.length }) };
+      const u = 'https://serpapi.com/search.json?engine=google_maps&q=' + encodeURIComponent(f.kw) + '&ll=' + encodeURIComponent('@' + f.ll + ',14z') + '&hl=fr&api_key=' + K;
+      const j = await fetch(u).then(r => r.json()).catch(e => ({ fetch_error: String(e) }));
+      const rs = (j && j.local_results) || [];
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({
+        fiche: f.name, index: i, kw: f.kw, ll: f.ll,
+        cle_serpapi_presente: !!K,
+        erreur: j.error || j.fetch_error || null,
+        statut: (j.search_metadata && j.search_metadata.status) || null,
+        nb_resultats: rs.length,
+        top5: rs.slice(0, 5).map(r => r.title)
+      }, null, 1) };
+    }
     if (q.type === 'audit') {
       const K = process.env.PLACES_API_KEY;
       const store = getStore('tracker');
