@@ -191,6 +191,13 @@ async function rankHist() {
       base[date] = Object.assign(base[date] || {}, w);
     }
   } catch (e) {}
+  // list() est eventuellement coherent : une vague ecrite il y a quelques minutes
+  // peut en etre absente. Les cles du jour sont donc relues directement.
+  const t = today();
+  for (let s = 0; s < FICHES.length; s += WAVE) {
+    const w = await getJSON('rankbatch/' + t + '/' + s, null);
+    if (w) base[t] = Object.assign(base[t] || {}, w);
+  }
   return base;
 }
 
