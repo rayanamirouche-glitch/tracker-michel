@@ -185,5 +185,203 @@
   "link": "https://maps.app.goo.gl/jSBSzC4uL668Lo8r7",
   "region": "Var",
   "obj": 10
+ },
+ {
+  "name": "Couvreur - Intervention Demoussage",
+  "q": "Couvreur - Intervention Demoussage",
+  "target": "couvreur - intervention",
+  "ll": "43.607,6.383",
+  "kw": "couvreur draguignan",
+  "city": "Draguignan",
+  "link": "https://maps.app.goo.gl/9NaLmnMWNChWeprA9",
+  "region": "Var",
+  "obj": 10
+ },
+ {
+  "name": "Couvreur la gaude",
+  "q": "Couvreur la gaude",
+  "target": "couvreur la gaude",
+  "ll": "43.702,7.145",
+  "kw": "couvreur la gaude",
+  "city": "La Gaude",
+  "link": "https://maps.app.goo.gl/AFsRdURcvUFMUEWm7",
+  "region": "Nice",
+  "obj": 20
+ },
+ {
+  "name": "Couvreur Carqueiranne Père Et Fils",
+  "q": "Couvreur Carqueiranne Père Et Fils",
+  "target": "couvreur carqueiranne pere",
+  "ll": "43.085,6.109",
+  "kw": "couvreur carqueiranne",
+  "city": "Carqueiranne",
+  "link": "https://maps.app.goo.gl/e1yUDdzp3Ev3AcUn6",
+  "region": "Var",
+  "obj": 20
+ },
+ {
+  "name": "Pro Couvreur Charpentier Étanchéité Toit Terasse cavalaire",
+  "q": "Pro Couvreur Charpentier Étanchéité Toit Terasse cavalaire",
+  "target": "pro couvreur charpentier",
+  "ll": "43.171,6.530",
+  "kw": "couvreur cavalaire",
+  "city": "Cavalaire",
+  "link": "https://maps.app.goo.gl/s36gAye7K58aA8dN7",
+  "region": "Var",
+  "obj": 25
+ },
+ {
+  "name": "Pro Toiturier",
+  "q": "Pro Toiturier wavre",
+  "target": "pro toiturier",
+  "ll": "50.731,4.557",
+  "kw": "couvreur wavre",
+  "city": "Wavre",
+  "link": "https://maps.app.goo.gl/CvLq5t7KL8ecz4VYA",
+  "region": "Belgique",
+  "obj": 30
+ },
+ {
+  "name": "Couvreur le Cannet 06",
+  "q": "Couvreur le Cannet 06",
+  "target": "couvreur le cannet",
+  "ll": "43.574,7.019",
+  "kw": "couvreur le cannet",
+  "city": "Le Cannet",
+  "link": "https://maps.app.goo.gl/FTjpaxNKABtV9SGS8",
+  "region": "Nice",
+  "obj": 20
+ },
+ {
+  "name": "Expert Toiture 06 & Fils",
+  "q": "Expert Toiture 06 & Fils",
+  "target": "expert toiture 06",
+  "ll": "43.760,7.473",
+  "kw": "couvreur menton",
+  "city": "Menton",
+  "link": "https://maps.app.goo.gl/D38Xqb8A6Jhq6Th76",
+  "region": "Nice",
+  "obj": 40
+ },
+ {
+  "name": "Couvreur Toulon Dems",
+  "q": "Couvreur Toulon Dems",
+  "target": "couvreur toulon dems",
+  "ll": "43.122,5.944",
+  "kw": "couvreur toulon",
+  "city": "Toulon",
+  "link": "https://maps.app.goo.gl/YgDwAtciQTYMSpHL8",
+  "region": "Var",
+  "obj": 15
+ },
+ {
+  "name": "Spécialisé Toiture 83",
+  "q": "Spécialisé Toiture 83",
+  "target": "specialise toiture 83",
+  "ll": "43.590,6.875",
+  "kw": "couvreur 83",
+  "city": "83",
+  "link": "https://maps.app.goo.gl/U7PPQkcobvPvL7cL8",
+  "region": "Var",
+  "obj": 10
+ },
+ {
+  "name": "Couvreur du plan 83",
+  "q": "Couvreur du plan 83",
+  "target": "couvreur du plan",
+  "ll": "43.339,6.550",
+  "kw": "couvreur le plan",
+  "city": "Le Plan",
+  "link": "https://maps.app.goo.gl/6xjneMLZHxuumNfDA",
+  "region": "Var",
+  "obj": 10
+ },
+ {
+  "name": "Super couverture",
+  "q": "Super couverture",
+  "target": "super couverture",
+  "ll": "43.209,6.464",
+  "kw": "couvreur var",
+  "city": "Var",
+  "link": "https://maps.app.goo.gl/MBtniatKAfenmU3YA",
+  "region": "Var",
+  "obj": 10
+ },
+ {
+  "name": "ID Toiture Roquefort les pins",
+  "q": "ID Toiture Roquefort les pins",
+  "target": "id toiture roquefort",
+  "ll": "43.680,7.045",
+  "kw": "couvreur roquefort les pins",
+  "city": "Roquefort-les-Pins",
+  "link": "https://maps.app.goo.gl/emrvB9qkW95qzK5v8",
+  "region": "Nice",
+  "obj": 25
+ },
+ {
+  "name": "Couvreur Cannes & Fils SP Toiture",
+  "q": "Couvreur Cannes & Fils SP Toiture",
+  "target": "couvreur cannes &",
+  "ll": "43.553,7.019",
+  "kw": "couvreur cannes",
+  "city": "Cannes",
+  "link": "https://maps.app.goo.gl/5dquwCrPTnpdNCTp8",
+  "region": "Nice",
+  "obj": 15
+ },
+ {
+  "name": "Couvreur La Colle-Sur-Loup Expert 06",
+  "q": "Couvreur La Colle-Sur-Loup Expert 06",
+  "target": "couvreur la colle-sur-loup",
+  "ll": "43.689,7.101",
+  "kw": "couvreur la colle sur loup",
+  "city": "La Colle-sur-Loup",
+  "link": "https://maps.app.goo.gl/8a6ZcfkDzGhU6Ygt8",
+  "region": "Nice",
+  "obj": 30
+ },
+ {
+  "name": "Couvreur Sos Toiture",
+  "q": "Couvreur Sos Toiture",
+  "target": "couvreur sos toiture",
+  "ll": "43.677,6.792",
+  "kw": "couvreur montauroux",
+  "city": "Montauroux",
+  "link": "https://maps.app.goo.gl/8cPsjX1njwRQCRvA6",
+  "region": "Var",
+  "obj": 25
+ },
+ {
+  "name": "Couvreur agay père et fils azur",
+  "q": "Couvreur agay père et fils azur",
+  "target": "couvreur agay pere",
+  "ll": "43.436,6.864",
+  "kw": "couvreur agay",
+  "city": "Agay",
+  "link": "https://maps.app.goo.gl/zipr9eJnVHKW6A6p8",
+  "region": "Var",
+  "obj": 10
+ },
+ {
+  "name": "Couvreur hyères les palmiers",
+  "q": "Couvreur hyères les palmiers",
+  "target": "couvreur hyeres les",
+  "ll": "43.124,6.147",
+  "kw": "couvreur hyères",
+  "city": "Hyères",
+  "link": "https://maps.app.goo.gl/xUK36Tu9jVakLp8z8",
+  "region": "Var",
+  "obj": 30
+ },
+ {
+  "name": "Toiture du canton 83",
+  "q": "Toiture du canton 83",
+  "target": "toiture du canton",
+  "ll": "43.628,6.701",
+  "kw": "couvreur fayence",
+  "city": "Fayence",
+  "link": "https://maps.app.goo.gl/9YWb5aETt3AXePZ77",
+  "region": "Var",
+  "obj": 15
  }
 ]
