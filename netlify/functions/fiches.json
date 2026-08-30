@@ -8,7 +8,7 @@
   "city": "Nice",
   "link": "https://maps.app.goo.gl/6s3UYiUvkP6iXbAD9",
   "region": "Nice",
-  "obj": 30
+  "obj": 50
  },
  {
   "name": "ARTISANS ID TOITURE CHARPENTIER 83",
@@ -119,17 +119,6 @@
   "link": "https://maps.app.goo.gl/6Z3hzhZRDJ8CEfXq5",
   "region": "Var",
   "obj": 30
- },
- {
-  "name": "Couvreur Nice IG Couvreur Charpentier (2)",
-  "q": "Couvreur Nice IG Couvreur Charpentier",
-  "target": "couvreur nice ig",
-  "ll": "43.701,7.268",
-  "kw": "couvreur nice",
-  "city": "Nice",
-  "link": "https://maps.app.goo.gl/ZXYHbcbGHcft1Aku5",
-  "region": "Nice",
-  "obj": 20
  },
  {
   "name": "Artisan Couvreur la Seyne Pére Et Fils",
