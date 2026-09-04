@@ -4,15 +4,5 @@
 # Releve des avis : PAS de planification (decision client du 2026-09-02).
 # Chaque appel Places = SKU Enterprise facture ; le client releve lui-meme
 # le tracker qu'il veut via le bouton "Actualiser AVIS".
-
-[functions."snapshot_rank"]
-  schedule = "50 6 * * 1"
-
-[functions."snapshot_rank_b"]
-  schedule = "53 6 * * 1"
-
-[functions."snapshot_rank_c"]
-  schedule = "56 6 * * 1"
-
-[functions."snapshot_rank_d"]
-  schedule = "59 6 * * 1"
+# Classements : PAS de planification (decision client du 2026-09-02).
+# Le client clique "Classements" sur le tracker qu'il suit ; SerpAPI est limite a 1000/mois.
