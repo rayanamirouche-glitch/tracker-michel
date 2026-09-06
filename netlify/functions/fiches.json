@@ -350,5 +350,85 @@
     "link": "https://maps.app.goo.gl/9YWb5aETt3AXePZ77",
     "region": "Var",
     "obj": 15
+  },
+  {
+    "name": "Xylofix – traitement charpente & nuisibles, Watermael-Boitsfort",
+    "q": "Xylofix – traitement charpente & nuisibles, Watermael-Boitsfort",
+    "target": "xylofix – traitement",
+    "ll": "50.807,4.420",
+    "kw": "exterminateur watermael boitsfort",
+    "city": "Watermael-Boitsfort",
+    "link": "https://maps.app.goo.gl/mP8cjZNwfK5rYXC47",
+    "region": "Belgique"
+  },
+  {
+    "name": "Exterminateur Rixensart | Vermitek, spécialiste charpente",
+    "q": "Exterminateur Rixensart | Vermitek, spécialiste charpente",
+    "target": "exterminateur rixensart |",
+    "ll": "50.704,4.537",
+    "kw": "exterminateur rixensart",
+    "city": "Rixensart",
+    "link": "https://maps.app.goo.gl/fAXCfYQNuPrCy7hc9",
+    "region": "Belgique"
+  },
+  {
+    "name": "Exterminateur Woluwe-Saint-Pierre – Sanibois, charpente & toiture",
+    "q": "Exterminateur Woluwe-Saint-Pierre – Sanibois, charpente & toiture",
+    "target": "exterminateur woluwe-saint-pierre –",
+    "ll": "50.836,4.462",
+    "kw": "exterminateur woluwe saint pierre",
+    "city": "Woluwe-Saint-Pierre",
+    "link": "https://maps.app.goo.gl/RJ3BMJwNpUBKN4Jb8",
+    "region": "Belgique"
+  },
+  {
+    "name": "Termifuge Ixelles, dératisation & traitement du bois",
+    "q": "Termifuge Ixelles, dératisation & traitement du bois",
+    "target": "termifuge ixelles, deratisation",
+    "ll": "50.810,4.393",
+    "kw": "exterminateur ixelles",
+    "city": "Ixelles",
+    "link": "https://maps.app.goo.gl/7hbZFcrWwEnMQ9wE9",
+    "region": "Belgique"
+  },
+  {
+    "name": "Mérulex – exterminateur charpente & mérule à Liège",
+    "q": "Mérulex – exterminateur charpente & mérule à Liège",
+    "target": "merulex – exterminateur",
+    "ll": "50.679,5.553",
+    "kw": "exterminateur liege",
+    "city": "Liège",
+    "link": "https://maps.app.goo.gl/V5KkgKiE4s4M18Y1A",
+    "region": "Belgique"
+  },
+  {
+    "name": "Kapricorn Stop · exterminateur charpente à Wavre",
+    "q": "Kapricorn Stop · exterminateur charpente à Wavre",
+    "target": "kapricorn stop ·",
+    "ll": "50.706,4.553",
+    "kw": "exterminateur wavre",
+    "city": "Wavre",
+    "link": "https://maps.app.goo.gl/EqNoQ7uM5j4WVoJcA",
+    "region": "Belgique"
+  },
+  {
+    "name": "Traitement Charpente Waterloo — Nuisibio",
+    "q": "Traitement Charpente Waterloo — Nuisibio",
+    "target": "traitement charpente waterloo",
+    "ll": "50.689,4.399",
+    "kw": "exterminateur waterloo",
+    "city": "Waterloo",
+    "link": "https://maps.app.goo.gl/ZcBHbEwifTTgkJbN9",
+    "region": "Belgique"
+  },
+  {
+    "name": "Woodgard, exterminateur nuisibles à Woluwe-Saint-Lambert",
+    "q": "Woodgard, exterminateur nuisibles à Woluwe-Saint-Lambert",
+    "target": "woodgard, exterminateur nuisibles",
+    "ll": "50.845,4.445",
+    "kw": "exterminateur woluwe saint lambert",
+    "city": "Woluwe-Saint-Lambert",
+    "link": "https://maps.app.goo.gl/xGfp4D63sxaKx8366",
+    "region": "Belgique"
   }
 ]
