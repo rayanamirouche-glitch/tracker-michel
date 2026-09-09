@@ -6,7 +6,7 @@
   "ll": "43.701,7.268",
   "kw": "couvreur nice",
   "city": "Nice",
-  "link": "https://maps.app.goo.gl/6s3UYiUvkP6iXbAD9",
+  "link": "https://maps.app.goo.gl/c5sdoheANXP8V4xR7",
   "region": "Nice",
   "obj": 100
  },
@@ -31,17 +31,6 @@
   "link": "https://maps.app.goo.gl/ThsGwSFtNTxA3A3dA",
   "region": "Var",
   "obj": 40
- },
- {
-  "name": "Couvreur Toulon artisan jean Michel père fils",
-  "q": "Couvreur Toulon artisan jean Michel père fils",
-  "target": "couvreur toulon artisan",
-  "ll": "43.124,5.928",
-  "kw": "couvreur toulon",
-  "city": "Toulon",
-  "link": "https://maps.app.goo.gl/Y5EaSPw8EF9PUymT8",
-  "region": "Toulon",
-  "obj": 50
  },
  {
   "name": "Artisan couvreur charpentier zingueur etancheur Fréjus",
