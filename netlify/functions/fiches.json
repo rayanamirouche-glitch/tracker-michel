@@ -311,7 +311,7 @@
     "ll": "43.553,7.019",
     "kw": "couvreur cannes",
     "city": "Cannes",
-    "link": "https://maps.app.goo.gl/5dquwCrPTnpdNCTp8",
+    "link": "https://maps.app.goo.gl/xrY7VLw14cqpPqx76",
     "region": "Nice",
     "obj": 14,
     "type": "avis"
@@ -492,5 +492,49 @@
     "link": "https://maps.app.goo.gl/z5d8LZzntG87LotE8",
     "region": "Nice",
     "obj": 57
+  },
+  {
+    "name": "Les Artisans",
+    "q": "Les Artisans",
+    "target": "les artisans",
+    "ll": "46.729,8.187",
+    "kw": "ferblantier meiringen",
+    "city": "Meiringen",
+    "link": "https://maps.app.goo.gl/ybdzMLGfY8Z7t4iL6",
+    "region": "Nice",
+    "obj": 500
+  },
+  {
+    "name": "Les Couvreurs",
+    "q": "Les Couvreurs",
+    "target": "les couvreurs",
+    "ll": "45.758,4.832",
+    "kw": "couvreur lyon",
+    "city": "Lyon",
+    "link": "https://maps.app.goo.gl/TRfnrEoYTFsuUEct5",
+    "region": "Nice",
+    "obj": 100
+  },
+  {
+    "name": "Protect Habitat 40",
+    "q": "Protect Habitat 40",
+    "target": "protect habitat 40",
+    "ll": "48.694,6.183",
+    "kw": "couvreur nancy",
+    "city": "Nancy",
+    "link": "https://maps.app.goo.gl/e3YyCbXt3FjyAEZA7",
+    "region": "Nice",
+    "obj": 500
+  },
+  {
+    "name": "David Toiture Draguignan",
+    "q": "David Toiture Draguignan",
+    "target": "david toiture draguignan",
+    "ll": "43.537,6.463",
+    "kw": "couvreur draguignan",
+    "city": "Draguignan",
+    "link": "https://maps.app.goo.gl/Cmz8XvjvxpzcW4cNA",
+    "region": "Nice",
+    "obj": 120
   }
 ]
