@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Tracker Michel — R.Consulting</title>
+<title>Tracker — R.Consulting</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
@@ -23,6 +23,7 @@ button{font-family:inherit}
 .nav a.on{background:#322649;color:#fff}
 .nav svg{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .nav .nb{margin-left:auto;background:var(--primary);color:#fff;border-radius:10px;padding:1px 8px;font-size:.66rem;font-weight:800}
+.nav.mobile{display:none}
 .side-card{margin-top:auto;background:#2a1f40;border:1px solid var(--side-line);border-radius:14px;padding:14px;display:flex;gap:10px;align-items:flex-start;font-size:.8rem;color:#fff}
 .side-card small{display:block;color:#a99dc4;font-size:.7rem;margin-top:2px}
 .side-card svg{width:20px;height:20px;stroke:#a78bfa;fill:none;stroke-width:2;flex:none}
@@ -166,7 +167,7 @@ tr.alert{background:var(--bad-soft)}tr.alert:hover{background:#fbe0e6}
   .work{padding:14px 14px 60px}
   .heading h1{font-size:1.3rem}
   .actions .btn{padding:8px 10px;font-size:.74rem}
-  .stats{grid-template-columns:repeat(3,1fr);gap:8px}.stat{padding:12px}.stat-val{font-size:1.2rem}
+  .stats{grid-template-columns:repeat(3,1fr);gap:8px}.stat{padding:12px}.stat-val{font-size:1.2rem}.stat-lbl{white-space:normal;font-size:.66rem;line-height:1.2}.stat-ico{width:24px;height:24px}
   .chartbox{padding:10px}
   .tablewrap{overflow:visible}
   table,thead,tbody,tr,td{display:block}thead{display:none}
@@ -187,7 +188,7 @@ tr.alert{background:var(--bad-soft)}tr.alert:hover{background:#fbe0e6}
 </style></head><body>
 <div class="shell">
 <aside class="side">
-  <div class="brand"><div class="brand-mark">R<span>.</span></div><div><b>TRACKER MICHEL</b><small>SUIVI LOCAL GOOGLE</small></div></div>
+  <div class="brand"><div class="brand-mark">R<span>.</span></div><div><b>TRACKER</b><small>SUIVI LOCAL GOOGLE</small></div></div>
   <div class="side-label">ESPACE DE SUIVI</div>
   <nav class="nav">
     <a href="#top" class="on" onclick="navOn(this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Vue d'ensemble</a>
@@ -200,12 +201,12 @@ tr.alert{background:var(--bad-soft)}tr.alert:hover{background:#fbe0e6}
 </aside>
 <div class="main" id="top">
 <header class="topbar">
-  <div class="crumb">Pilotage local <span>›</span> <b>Tracker Michel</b></div>
+  <div class="crumb">Pilotage local <span>›</span> <b>Tracker</b></div>
   <div class="top-right"><input class="search" id="q" placeholder="Rechercher une fiche, une ville, un mot-clé…" oninput="Q=this.value;applyView()"><span class="pill">Relevé manuel · <span id="hNb">—</span> fiches</span><span class="avatar">RC</span></div>
 </header>
 <main class="work">
 <div class="heading">
-  <div><div class="eyebrow">VOTRE PORTEFEUILLE GOOGLE</div><h1>Tracker Michel</h1><p>Avis Google et position locale de chacune de vos fiches, mesurés comme les voit un client.</p></div>
+  <div><div class="eyebrow">VOTRE PORTEFEUILLE GOOGLE</div><h1>Tracker</h1><p>Avis Google et position locale de chacune de vos fiches, mesurés comme les voit un client.</p></div>
   <div class="actions">
     <button class="btn btn-avis" id="btnAvis" onclick="runAvis()">↻ Actualiser les avis</button>
     <button class="btn btn-rank" id="btnRank" onclick="runRank()">📍 Classements</button>
@@ -904,7 +905,7 @@ function ouvrirFiche(i, tab){
     '<div class="tab' + (tab === 'avis' ? ' on' : '') + '" data-t="avis">' + (hist.length > 1 ? '<canvas id="sheetChart" height="120"></canvas>' : '<p class="note">Deux relevés sont nécessaires pour tracer l\'évolution.</p>') +
       '<div class="hist">' + (hist.length ? hist.slice().reverse().slice(0, 40).map((x, k, all) => { const p = all[k + 1]; return '<div class="hrow"><span class="dot"></span><div><b>' + x.n + ' avis</b>' + (p ? ' <span class="delta ' + (x.n - p.n < 0 ? 'down' : 'up') + '">' + (x.n - p.n > 0 ? '+' : '') + (x.n - p.n) + '</span>' : '') + '<small>' + x.d + (x.r ? ' · ' + x.r.toFixed(1) + ' ★' : '') + '</small></div></div>'; }).join('') : '<p class="note">Aucun relevé.</p>') + '</div></div>' +
     // Positions
-    '<div class="tab' + (tab === 'pos' ? ' on' : '') + '" data-t="pos"><div class="kv">' + kws.map(k => { const e = rk[k]; return '<div class="k"><label>' + escAttr(k) + '</label><div class="v"><span class="pos ' + posCls(e ? e.pos : undefined) + '">' + (e ? (e.pos === null ? 'absent' : '#' + e.pos) : '—') + '</span>' + (e ? '<small> le ' + e.date + '</small>' : '') + '</div></div>'; }).join('') + '</div>' +
+    '<div class="tab' + (tab === 'pos' ? ' on' : '') + '" data-t="pos"><div class="kv">' + kws.map((k, ki) => { let e = rk[k]; if (!e && ki === 0 && rLast) e = { pos: rLast.p, date: rLast.d }; return '<div class="k"><label>' + escAttr(k) + '</label><div class="v"><span class="pos ' + posCls(e ? e.pos : undefined) + '">' + (e ? (e.pos === null ? 'absent' : '#' + e.pos) : '—') + '</span>' + (e ? '<small> le ' + e.date + '</small>' : '') + '</div></div>'; }).join('') + '</div>' +
       '<p class="note">Bloc local de Google Recherche, mobile, vu depuis ' + escAttr(f.city || 'la ville de la fiche') + '. « absent » = pas dans les adresses affichées.</p>' +
       '<div class="hist">' + (rHist.length ? rHist.slice().reverse().slice(0, 40).map((x, k, all) => { const p = all[k + 1]; const d = (p && p.p != null && x.p != null) ? p.p - x.p : null; return '<div class="hrow"><span class="dot" style="background:' + (x.p != null && x.p <= 3 ? 'var(--ok)' : x.p == null ? 'var(--muted)' : 'var(--warn)') + '"></span><div><b>' + posTxt(x.p) + '</b>' + (d ? ' <span class="delta ' + (d > 0 ? 'up' : 'down') + '">' + (d > 0 ? '▲' + d : '▼' + Math.abs(d)) + '</span>' : '') + '<small>' + x.d + ' · ' + escAttr(kws[0] || '') + '</small></div></div>'; }).join('') : '<p class="note">Aucun classement relevé.</p>') + '</div></div>' +
     // Réglages
