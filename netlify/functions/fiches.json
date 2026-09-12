@@ -536,5 +536,19 @@
     "link": "https://maps.app.goo.gl/Cmz8XvjvxpzcW4cNA",
     "region": "Nice",
     "obj": 120
+  },
+  {
+    "name": "Couvreur La Valette-Du-Var SP Toiture",
+    "q": "Couvreur La Valette-Du-Var SP Toiture",
+    "target": "couvreur la valette-du-var",
+    "ll": "43.138,5.983",
+    "kw": "couvreur la valette du var",
+    "city": "La Valette Du Var",
+    "link": "https://maps.app.goo.gl/rU5XZgmMesx27iLA6",
+    "region": "Nice",
+    "obj": 30,
+    "type": "avis",
+    "commande": 30,
+    "commande_note": "3/j"
   }
 ]
