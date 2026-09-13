@@ -259,7 +259,7 @@ tr.alert{background:var(--bad-soft)}tr.alert:hover{background:#fbe0e6}
 <div class="row"><button class="btn btn-add" id="a_ok" onclick="ajouterFiche()">Ajouter</button><button class="btn btn-rank" onclick="$('modal').style.display='none'">Annuler</button></div>
 </div></div>
 <div class="modal" id="cmdModal"><div class="box">
-<h3>Commander des avis</h3><p>4 € l'avis · 6, 7 ou 8 € l'avis avec 1, 2 ou 3 photos du chantier · paiement par tranche de 20 avis.</p>
+<h3>Commander des avis</h3><p>4 € l'avis · 8 € l'avis avec photos (10 € à partir de 3 photos) · paiement par tranche de 20 avis.</p>
 <label>Fiche</label><select id="c_f" onchange="cmdFicheChange()"></select>
 <div id="c_new" style="display:none">
 <label>Nom de la nouvelle fiche</label><input id="c_n" placeholder="ex : Couvreur Dupont Père & Fils">
@@ -535,7 +535,7 @@ function cmdFicheChange(){ $('c_new').style.display = $('c_f').value === 'new' ?
 function cmdCalc(){
   const t = Math.max(1, parseInt($('c_t').value || '0', 10) || 0), j = parseInt($('c_j').value, 10);
   let p = Math.max(0, parseInt($('c_p').value || '0', 10) || 0); if (p > t) { p = t; $('c_p').value = t; }
-  const pp = parseInt($('c_pp').value, 10), prix = (t - p) * 4 + p * (5 + pp);
+  const pp = parseInt($('c_pp').value, 10), prix = (t - p) * 4 + p * (pp >= 3 ? 10 : 8);
   const tranches = Math.ceil(t / TRANCHE), premiere = Math.round(prix * Math.min(TRANCHE, t) / t), jours = Math.ceil(t / j);
   return { t, j, p, pp, prix, tranches, premiere, jours };
 }
