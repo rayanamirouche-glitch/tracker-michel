@@ -130,7 +130,7 @@ async function snapAvisWave(start) {
   const snap = {};
   await Promise.all(wave.map(async f => {
     const pid = ids[f.name]; if (!pid) return;
-    const u = 'https://places.googleapis.com/v1/places/' + pid + '?fields=rating,userRatingCount&key=' + K;
+    const u = 'https://places.googleapis.com/v1/places/' + pid + '?fields=rating,userRatingCount,nationalPhoneNumber,websiteUri&key=' + K;
     for (const ms of [8500]) {
       try {
         const j = await to(fetch(u).then(r => r.ok ? r.json() : null), ms);
@@ -211,7 +211,9 @@ function serpUrl(f, kw, K) {
     + '&device=mobile&hl=fr&gl=' + gl + '&google_domain=google.' + gl + '&no_cache=true&async=true&api_key=' + K;
 }
 function posDe(f, j) {
-  const rs = ((j && j.local_results && (Array.isArray(j.local_results) ? j.local_results : j.local_results.places)) || []).filter(x => !(x.sponsored || x.is_paid || x.type === 'ad'));
+  const brut = (j && j.local_results) ? (Array.isArray(j.local_results) ? j.local_results : j.local_results.places) : null;
+  const rs = (brut || []).filter(x => !(x.sponsored || x.is_paid || x.type === 'ad'));
+  if (!rs.length) return undefined;   // aucun bloc local dans la page rendue : on ne sait pas, ce n'est pas « absent »
   const m = pickMatch(rs, r => r.title, normName(f.target));
   return m ? m.idx + 1 : null;
 }
@@ -238,7 +240,7 @@ async function soumettre(list, K, cle) {
       if (!j || j.error) { erreurs++; message = (j && j.error) || 'reponse vide'; return; }
       const st = j.search_metadata || {};
       const job = { name: t.f.name, kw: t.kw, i: t.i, id: st.id, cle: cle, t: Date.now() };
-      if (j.local_results || /success/i.test(st.status || '')) { job.fait = true; job.pos = posDe(t.f, j); }
+      if (j.local_results || /success/i.test(st.status || '')) { const p = posDe(t.f, j); job.fait = true; if (p === undefined) job.err = 'bloc local vide'; else job.pos = p; }
       jobs.push(job);
     }));
   }
@@ -263,7 +265,11 @@ async function recolter(K, jobs) {
         return;
       }
       if (/error/i.test(st)) { j.fait = true; j.err = (r.search_metadata.error || st); return; }
-      j.fait = true; j.pos = parNom[j.name] ? posDe(parNom[j.name], r) : null;
+      const p = parNom[j.name] ? posDe(parNom[j.name], r) : null;
+      // Page rendue sans bloc local (ca arrive sur mobile) : erreur a retenter, pas une absence.
+      if (p === undefined) { j.fait = true; j.err = 'bloc local vide'; return; }
+      j.fait = true; j.pos = p;
+      if (j.pos === null) j.titres = ((r.local_results && r.local_results.places) || []).slice(0, 6).map(x => x.title);   // diagnostic
     } catch (e) { if (Date.now() - (j.t || 0) > ATTENTE_MAX_MS) { j.fait = true; j.err = 'timeout'; } }
   }));
   const parCle = {};
@@ -429,7 +435,7 @@ async function snapAvisOne(idx) {
   const w = await getJSON(key, {});
   w[f.name] = v;
   await setJSON(key, w);
-  return { ok: true, n: v.n, r: v.r };
+  return { ok: true, n: v.n, r: v.r, tel: j.nationalPhoneNumber || null, web: j.websiteUri || null };
 }
 
 module.exports = { snapAvis, snapAvisOne, snapRank, snapRankSel, recolter, allData, rankCooldown, relink, chargerFiches, fiches: () => FICHES, getJSON, setJSON, normName, pickMatch, paysDe };

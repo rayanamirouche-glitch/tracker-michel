@@ -44,7 +44,7 @@ exports.handler = async (event) => {
       try {
         const j = await fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.id,places.displayName,places.userRatingCount,places.location,places.formattedAddress' },
+          headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.nationalPhoneNumber,places.websiteUri,places.id,places.displayName,places.userRatingCount,places.location,places.formattedAddress' },
           body: JSON.stringify({ textQuery: name + ' ' + city, languageCode: 'fr' })
         }).then(r => r.json());
         const t = core.normName(name.split(' ').slice(0, 3).join(' '));
@@ -103,7 +103,7 @@ exports.handler = async (event) => {
       if (q.ll) { const c = q.ll.split(',').map(Number); body.locationBias = { circle: { center: { latitude: c[0], longitude: c[1] }, radius: 30000 } }; }
       const j = await fetch('https://places.googleapis.com/v1/places:searchText', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.location' },
+        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.nationalPhoneNumber,places.websiteUri,places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress,places.location' },
         body: JSON.stringify(body)
       }).then(r => r.json());
       return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ q: q.q, results: (j.places || []).slice(0, 5), erreur: j.error || null }, null, 1) };
@@ -153,10 +153,11 @@ exports.handler = async (event) => {
       const kwEff = q.kw || String(over[f.name] || f.kw).split(/\s*[|;]\s*/)[0].trim();
       const u = 'https://serpapi.com/search.json?engine=google&q=' + encodeURIComponent(kwEff) + (q.engine === 'google_local' ? '' : '&lat=' + encodeURIComponent(String(f.ll).split(',')[0]) + '&lon=' + encodeURIComponent(String(f.ll).split(',')[1])) + (q.loc ? '&location=' + encodeURIComponent(q.loc) : '') + '&device=' + (q.device || 'mobile') + '&hl=fr' + (q.nogl === '1' ? '' : '&gl=' + core.paysDe(f) + '&google_domain=google.' + core.paysDe(f)) + (q.nocache === '0' ? '' : '&no_cache=true') + (q.async === '1' ? '&async=true' : '') + '&api_key=' + K;
       const t0 = Date.now();
-      const j = await fetch(q.engine === 'google_local' ? u.replace('engine=google&', 'engine=google_local&') : u).then(r => r.json()).catch(e => ({ fetch_error: String(e) }));
-      const rs = ((j && j.local_results && j.local_results.places) || []).filter(x => !(x.sponsored || x.is_paid || x.type === 'ad'));
+      const uMaps = 'https://serpapi.com/search.json?engine=google_maps&q=' + encodeURIComponent(kwEff) + '&ll=' + encodeURIComponent('@' + f.ll + ',14z') + '&hl=fr&no_cache=true&api_key=' + K;
+      const j = await fetch(q.engine === 'google_maps' ? uMaps : q.engine === 'google_local' ? u.replace('engine=google&', 'engine=google_local&') : u).then(r => r.json()).catch(e => ({ fetch_error: String(e) }));
+      const rs = ((j && j.local_results && (Array.isArray(j.local_results) ? j.local_results : j.local_results.places)) || []).filter(x => !(x.sponsored || x.is_paid || x.type === 'ad')).slice(0, 20);
       return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({
-        fiche: f.name, index: i, kw: kwEff, kw_fichier: f.kw, ll: f.ll, duree_ms: Date.now() - t0, engine: q.engine || 'google', id: (j.search_metadata && j.search_metadata.id) || null, url_sans_cle: u.replace(/api_key=[^&]*/, 'api_key=…'),
+        fiche: f.name, index: i, kw: kwEff, kw_fichier: f.kw, ll: f.ll, duree_ms: Date.now() - t0, engine: q.engine || 'google', cles_reponse: Object.keys(j || {}).slice(0, 25), type_local: Array.isArray(j && j.local_results) ? 'array' : typeof (j && j.local_results), info: (j && j.search_information) || null, id: (j.search_metadata && j.search_metadata.id) || null, url_sans_cle: (q.engine === 'google_maps' ? uMaps : u).replace(/api_key=[^&]*/, 'api_key=…'),
         cle_serpapi_presente: !!K,
         erreur: j.error || j.fetch_error || null,
         statut: (j.search_metadata && j.search_metadata.status) || null,
@@ -211,7 +212,7 @@ exports.handler = async (event) => {
       const ll = f.ll.split(',').map(Number);
       const j = await fetch('https://places.googleapis.com/v1/places:searchText', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress' },
+        headers: { 'Content-Type': 'application/json', 'X-Goog-Api-Key': K, 'X-Goog-FieldMask': 'places.nationalPhoneNumber,places.websiteUri,places.id,places.displayName,places.rating,places.userRatingCount,places.formattedAddress' },
         body: JSON.stringify({ textQuery: f.name, locationBias: { circle: { center: { latitude: ll[0], longitude: ll[1] }, radius: 5000 } } })
       }).then(r => r.json());
       return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ fiche: f.name, results: (j.places || []).slice(0, 8) }, null, 1) };
