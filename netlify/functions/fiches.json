@@ -36,9 +36,9 @@
     "city": "Fréjus",
     "link": "https://maps.app.goo.gl/U6ALwwPf5d2mhFnu8",
     "region": "Fréjus",
-    "obj": 55,
+    "obj": 85,
     "type": "avis",
-    "commande": 55,
+    "commande": 85,
     "livres": 21
   },
   {
@@ -50,9 +50,9 @@
     "city": "Ste-Maxime",
     "link": "https://maps.app.goo.gl/D3azxpy5MD4JgAJz9",
     "region": "Var",
-    "obj": 65,
+    "obj": 95,
     "type": "avis",
-    "commande": 65,
+    "commande": 95,
     "livres": 15
   },
   {
@@ -227,9 +227,9 @@
     "city": "La Colle-sur-Loup",
     "link": "https://maps.app.goo.gl/3d7j9EJnDPaTDsG87",
     "region": "Nice",
-    "obj": 30,
+    "obj": 70,
     "type": "avis",
-    "commande": 30,
+    "commande": 70,
     "livres": 21
   },
   {
@@ -447,8 +447,8 @@
     "city": "Draguignan",
     "link": "https://maps.app.goo.gl/Z1VZ4tryadk6eHfT6",
     "region": "Nice",
-    "obj": 105,
-    "commande": 105,
+    "obj": 120,
+    "commande": 120,
     "livres": 5
   },
   {
@@ -643,8 +643,10 @@
     "city": "Nice",
     "link": "https://maps.app.goo.gl/c5sdoheANXP8V4xR7",
     "region": "Nice",
-    "obj": 55,
-    "type": "avis"
+    "obj": 90,
+    "type": "avis",
+    "commande": 90,
+    "livres": 34
   },
   {
     "name": "Couvreur Cabasse - Toiture Artisan",
