@@ -451,8 +451,9 @@ async function setVue(p) {
   return v;
 }
 const cleAvis = a => (a.a || '') + '|' + a.d;
-// Relevé d'une fiche : SerpAPI google_maps_reviews trié newestFirst, pages de 20, jusqu'à la date « depuis ».
-// Une fiche par appel (≤ 3 pages de ~2 s) pour rester sous la limite de 10 s d'une fonction Netlify.
+// Relevé d'une fiche : SerpAPI google_maps_reviews trié newestFirst, jusqu'à la date « depuis ».
+// UNE page par appel (SerpAPI met parfois 4-6 s) : la lecture en cours est gardée dans 'recentsjob/<fiche>'
+// et l'appel renvoie suite:true tant qu'il faut rappeler. Évite la limite de 10 s d'une fonction Netlify.
 async function snapRecentsOne(idx) {
   await chargerFiches();
   const K = process.env.SERPAPI_KEY;
@@ -461,36 +462,38 @@ async function snapRecentsOne(idx) {
   if (!pid) return { ok: false, motif: 'fiche non liée' };
   const vue = await getVue(); const depuis = vue.fiches[f.name] || vue.depuis;
   if (!depuis) return { ok: false, motif: 'date « depuis » non réglée' };
-  const lus = []; let token = null, pages = 0, complet = false, erreur = null;
-  while (pages < 3) {
-    let u = 'https://serpapi.com/search.json?engine=google_maps_reviews&sort_by=newestFirst&hl=fr&place_id=' + encodeURIComponent(pid) + '&api_key=' + K;
-    if (token) u += '&num=20&next_page_token=' + encodeURIComponent(token);
-    let j;
-    try { j = await to(fetch(u).then(r => r.json()), 3000); } catch (e) { erreur = String(e.message || e); break; }
-    pages++;
-    if (j.error) { if (/hasn't returned any results/i.test(j.error)) complet = true; else erreur = j.error; break; }
-    for (const r of (j.reviews || [])) {
-      lus.push({ d: String(r.iso_date || '').slice(0, 10), a: (r.user && r.user.name) || '', r: r.rating || null, t: String(r.snippet || (r.extracted_snippet && r.extracted_snippet.original) || '').slice(0, 160) });
-    }
-    token = j.serpapi_pagination && j.serpapi_pagination.next_page_token;
-    if (!token || !(j.reviews || []).length) { complet = true; break; }
-    if (lus.length && lus[lus.length - 1].d < depuis) { complet = true; break; }
+  const kj = 'recentsjob/' + f.name;
+  let job = await getJSON(kj, null);
+  if (!job || job.depuis !== depuis || job.jour !== today() || !job.token) job = { depuis, jour: today(), lus: [], token: null, pages: 0 };
+  let u = 'https://serpapi.com/search.json?engine=google_maps_reviews&sort_by=newestFirst&hl=fr&place_id=' + encodeURIComponent(pid) + '&api_key=' + K;
+  if (job.token) u += '&num=20&next_page_token=' + encodeURIComponent(job.token);
+  let j;
+  try { j = await to(fetch(u).then(r => r.json()), 8500); } catch (e) { return { ok: false, motif: 'Google lent (' + String(e.message || e) + '), réessaie' }; }
+  job.pages++;
+  let fini = false;
+  if (j.error) { if (/hasn't returned any results/i.test(j.error)) fini = true; else return { ok: false, motif: j.error }; }
+  for (const r of (j.reviews || [])) {
+    job.lus.push({ d: String(r.iso_date || '').slice(0, 10), a: (r.user && r.user.name) || '', r: r.rating || null, t: String(r.snippet || (r.extracted_snippet && r.extracted_snippet.original) || '').slice(0, 160) });
   }
-  if (!lus.length && erreur) return { ok: false, motif: erreur };
-  const avis = lus.filter(a => a.d >= depuis);
+  job.token = (j.serpapi_pagination && j.serpapi_pagination.next_page_token) || null;
+  const der = job.lus.length ? job.lus[job.lus.length - 1].d : null;
+  if (!job.token || !(j.reviews || []).length || (der && der < depuis) || job.pages >= 6) fini = true;
+  if (!fini) { await setJSON(kj, job); return { ok: true, fiche: f.name, suite: true, pages: job.pages }; }
+  await setJSON(kj, { depuis, jour: today(), lus: [], token: null, pages: 0 });
+  const avis = job.lus.filter(a => a.d >= depuis);
   const k = 'recents/' + f.name; const prev = await getJSON(k, null);
   const vus = Object.assign({}, prev && prev.vus); const t = today();
   avis.forEach(a => { if (!vus[cleAvis(a)]) vus[cleAvis(a)] = t; });
-  // disparus : vus lors d'un relevé précédent, dans la fenêtre, absents alors que la lecture est allée assez loin
+  // disparus : vus lors d'un relevé précédent, dans la fenêtre, absents du relevé complet d'aujourd'hui
   const presents = new Set(avis.map(cleAvis));
-  const perdus = (prev && prev.perdus ? prev.perdus.filter(p => p.d >= depuis) : []);
-  if (prev && prev.avis && (complet || (lus.length && lus[lus.length - 1].d < depuis))) {
+  const perdus = (prev && prev.perdus ? prev.perdus.filter(p => p.d >= depuis && !presents.has(cleAvis(p))) : []);
+  if (prev && prev.avis && prev.depuis <= depuis) {
     prev.avis.filter(a => a.d >= depuis && !presents.has(cleAvis(a)) && !perdus.some(p => cleAvis(p) === cleAvis(a)))
       .forEach(a => perdus.push(Object.assign({}, a, { disparu: t })));
   }
-  const out = { releve: new Date().toISOString(), depuis, n: avis.length, avis, perdus, vus, pages, partiel: !complet && !(lus.length && lus[lus.length - 1].d < depuis) };
+  const out = { releve: new Date().toISOString(), depuis, n: avis.length, avis, perdus, vus, pages: job.pages };
   await setJSON(k, out);
-  return { ok: true, fiche: f.name, n: avis.length, perdus: perdus.length, pages, partiel: out.partiel };
+  return { ok: true, fiche: f.name, n: avis.length, perdus: perdus.length, pages: job.pages };
 }
 async function recentsAll() {
   await chargerFiches();

@@ -820,7 +820,9 @@ async function runRecents(liste){
   $('btnAvis').disabled = true;
   let fait = 0, ok = 0, err = null, k = 0;
   async function worker(){ while (k < todo.length) { const i = todo[k++];
-    try { const j = await fetch('/.netlify/functions/run?type=recents1&i=' + i).then(r => r.json()); if (j.ok) ok++; else err = j.motif; } catch (e) { err = String(e); }
+    try { let j, essais = 0;
+      do { j = await fetch('/.netlify/functions/run?type=recents1&i=' + i).then(r => r.json()); essais++; } while (j && j.ok && j.suite && essais < 8);
+      if (j.ok && !j.suite) ok++; else err = j.motif || 'lecture incomplète'; } catch (e) { err = String(e); }
     fait++; msg('Avis récents — ' + fait + '/' + todo.length + ' fiches…'); } }
   try { await Promise.all([worker(), worker(), worker(), worker()]); await load(); } catch (e) {}
   msg(ok === todo.length ? 'Avis récents relevés ✓ (' + ok + ' fiches)' : ok + '/' + todo.length + ' fiches relevées' + (err ? ' — ' + err : '') + ' · reclique pour compléter');
