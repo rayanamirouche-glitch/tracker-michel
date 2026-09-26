@@ -451,6 +451,8 @@ async function setVue(p) {
   return v;
 }
 const cleAvis = a => (a.a || '') + '|' + a.d;
+// Lecture forte : le relevé enchaîne des appels rapprochés, une lecture « éventuelle » rendait l'état d'avant.
+async function getFort(k, d) { try { const v = await getStore({ name: 'tracker', consistency: 'strong' }).get(k, { type: 'json' }); return (v === null || v === undefined) ? d : v } catch (e) { return d } }
 // Relevé d'une fiche : SerpAPI google_maps_reviews trié newestFirst, jusqu'à la date « depuis ».
 // UNE page par appel (SerpAPI met parfois 4-6 s) : la lecture en cours est gardée dans 'recentsjob/<fiche>'
 // et l'appel renvoie suite:true tant qu'il faut rappeler. Évite la limite de 10 s d'une fonction Netlify.
@@ -463,7 +465,7 @@ async function snapRecentsOne(idx) {
   const vue = await getVue(); const depuis = vue.fiches[f.name] || vue.depuis;
   if (!depuis) return { ok: false, motif: 'date « depuis » non réglée' };
   const kj = 'recentsjob/' + f.name;
-  let job = await getJSON(kj, null);
+  let job = await getFort(kj, null);
   if (!job || job.depuis !== depuis || job.jour !== today() || !job.token) job = { depuis, jour: today(), lus: [], token: null, pages: 0 };
   let u = 'https://serpapi.com/search.json?engine=google_maps_reviews&sort_by=newestFirst&hl=fr&place_id=' + encodeURIComponent(pid) + '&api_key=' + K;
   if (job.token) u += '&num=20&next_page_token=' + encodeURIComponent(job.token);
@@ -481,7 +483,7 @@ async function snapRecentsOne(idx) {
   if (!fini) { await setJSON(kj, job); return { ok: true, fiche: f.name, suite: true, pages: job.pages }; }
   await setJSON(kj, { depuis, jour: today(), lus: [], token: null, pages: 0 });
   const avis = job.lus.filter(a => a.d >= depuis);
-  const k = 'recents/' + f.name; const prev = await getJSON(k, null);
+  const k = 'recents/' + f.name; const prev = await getFort(k, null);
   const vus = Object.assign({}, prev && prev.vus); const t = today();
   avis.forEach(a => { if (!vus[cleAvis(a)]) vus[cleAvis(a)] = t; });
   // disparus : vus lors d'un relevé précédent, dans la fenêtre, absents du relevé complet d'aujourd'hui
