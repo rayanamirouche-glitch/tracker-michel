@@ -228,6 +228,17 @@ exports.handler = async (event) => {
       await store.setJSON('obj', obj);
       return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, obj }) };
     }
+    if (q.type === 'recents1') {
+      const r1 = await core.snapRecentsOne(parseInt(q.i || '-1', 10));
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify(r1) };
+    }
+    if (q.type === 'setvue') {
+      if (event.httpMethod !== 'POST') return { statusCode: 405, body: JSON.stringify({ error: 'POST attendu' }) };
+      let payload;
+      try { payload = JSON.parse(event.body || '{}'); } catch (e) { return { statusCode: 400, body: JSON.stringify({ error: 'body JSON invalide' }) }; }
+      const vue = await core.setVue(payload);
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, vue }) };
+    }
     if (q.type === 'setids') {
       // Ecriture batch : un seul read-modify-write, sinon les appels concurrents
       // s'ecrasent (le blob store est eventuellement coherent).

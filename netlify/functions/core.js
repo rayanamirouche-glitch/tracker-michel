@@ -394,8 +394,8 @@ async function relink() {
 
 async function allData() {
   await chargerFiches();
-  const [avis, rank, ids, meta, base, kwover, objover, livover, rankKw] = await Promise.all([
-    avisHist(), rankHist(), getJSON('ids', {}), getJSON('rankMeta', {}), getJSON('base', {}), kwOverrides(), getJSON('obj', {}), getJSON('livres', {}), rankKwHist()
+  const [avis, rank, ids, meta, base, kwover, objover, livover, rankKw, vue, recents] = await Promise.all([
+    avisHist(), rankHist(), getJSON('ids', {}), getJSON('rankMeta', {}), getJSON('base', {}), kwOverrides(), getJSON('obj', {}), getJSON('livres', {}), rankKwHist(), getVue(), recentsAll()
   ]);
   // Une fiche retiree de fiches.json laisse son historique derriere elle. On l'ecarte
   // a la lecture, sinon elle continue de gonfler les totaux et les courbes.
@@ -409,7 +409,7 @@ async function allData() {
     }
     return out;
   };
-  return { fiches: FICHES, region: REGION, avis: prune(avis), rank: prune(rank), ids, rankMeta: meta, base, kwover, objover, livover, rankKw, ajouts: FICHES.filter(f => f.ajout).length };
+  return { fiches: FICHES, region: REGION, avis: prune(avis), rank: prune(rank), ids, rankMeta: meta, base, kwover, objover, livover, rankKw, ajouts: FICHES.filter(f => f.ajout).length, vue, recents };
 }
 
 // Releve d'une seule fiche, fusionne dans la cle de sa vague du jour.
@@ -438,4 +438,65 @@ async function snapAvisOne(idx) {
   return { ok: true, n: v.n, r: v.r, tel: j.nationalPhoneNumber || null, web: j.websiteUri || null };
 }
 
-module.exports = { snapAvis, snapAvisOne, snapRank, snapRankSel, recolter, allData, rankCooldown, relink, chargerFiches, fiches: () => FICHES, getJSON, setJSON, normName, pickMatch, paysDe };
+// ── Avis récents (« Plus récents » sur Google) ──
+// Vue choisie par Rayan (blob 'vue') : mode 'total' (compteur Google, comportement historique) ou
+// 'recents' (avis publiés depuis une date, lus un par un). depuis = date globale, fiches = date par fiche.
+async function getVue() { const v = await getJSON('vue', {}); return { mode: v.mode === 'recents' ? 'recents' : 'total', depuis: v.depuis || null, fiches: v.fiches || {} }; }
+async function setVue(p) {
+  const v = await getVue();
+  if (p.mode) v.mode = p.mode === 'recents' ? 'recents' : 'total';
+  if (p.depuis !== undefined) v.depuis = p.depuis || null;
+  for (const [n, d] of Object.entries(p.fiches || {})) { if (d) v.fiches[n] = d; else delete v.fiches[n]; }
+  await setJSON('vue', v);
+  return v;
+}
+const cleAvis = a => (a.a || '') + '|' + a.d;
+// Relevé d'une fiche : SerpAPI google_maps_reviews trié newestFirst, pages de 20, jusqu'à la date « depuis ».
+// Une fiche par appel (≤ 3 pages de ~2 s) pour rester sous la limite de 10 s d'une fonction Netlify.
+async function snapRecentsOne(idx) {
+  await chargerFiches();
+  const K = process.env.SERPAPI_KEY;
+  const f = FICHES[idx]; if (!f) return { ok: false, motif: 'fiche inconnue' };
+  const ids = await getJSON('ids', {}); const pid = ids[f.name];
+  if (!pid) return { ok: false, motif: 'fiche non liée' };
+  const vue = await getVue(); const depuis = vue.fiches[f.name] || vue.depuis;
+  if (!depuis) return { ok: false, motif: 'date « depuis » non réglée' };
+  const lus = []; let token = null, pages = 0, complet = false, erreur = null;
+  while (pages < 3) {
+    let u = 'https://serpapi.com/search.json?engine=google_maps_reviews&sort_by=newestFirst&hl=fr&place_id=' + encodeURIComponent(pid) + '&api_key=' + K;
+    if (token) u += '&num=20&next_page_token=' + encodeURIComponent(token);
+    let j;
+    try { j = await to(fetch(u).then(r => r.json()), 3000); } catch (e) { erreur = String(e.message || e); break; }
+    pages++;
+    if (j.error) { if (/hasn't returned any results/i.test(j.error)) complet = true; else erreur = j.error; break; }
+    for (const r of (j.reviews || [])) {
+      lus.push({ d: String(r.iso_date || '').slice(0, 10), a: (r.user && r.user.name) || '', r: r.rating || null, t: String(r.snippet || (r.extracted_snippet && r.extracted_snippet.original) || '').slice(0, 160) });
+    }
+    token = j.serpapi_pagination && j.serpapi_pagination.next_page_token;
+    if (!token || !(j.reviews || []).length) { complet = true; break; }
+    if (lus.length && lus[lus.length - 1].d < depuis) { complet = true; break; }
+  }
+  if (!lus.length && erreur) return { ok: false, motif: erreur };
+  const avis = lus.filter(a => a.d >= depuis);
+  const k = 'recents/' + f.name; const prev = await getJSON(k, null);
+  const vus = Object.assign({}, prev && prev.vus); const t = today();
+  avis.forEach(a => { if (!vus[cleAvis(a)]) vus[cleAvis(a)] = t; });
+  // disparus : vus lors d'un relevé précédent, dans la fenêtre, absents alors que la lecture est allée assez loin
+  const presents = new Set(avis.map(cleAvis));
+  const perdus = (prev && prev.perdus ? prev.perdus.filter(p => p.d >= depuis) : []);
+  if (prev && prev.avis && (complet || (lus.length && lus[lus.length - 1].d < depuis))) {
+    prev.avis.filter(a => a.d >= depuis && !presents.has(cleAvis(a)) && !perdus.some(p => cleAvis(p) === cleAvis(a)))
+      .forEach(a => perdus.push(Object.assign({}, a, { disparu: t })));
+  }
+  const out = { releve: new Date().toISOString(), depuis, n: avis.length, avis, perdus, vus, pages, partiel: !complet && !(lus.length && lus[lus.length - 1].d < depuis) };
+  await setJSON(k, out);
+  return { ok: true, fiche: f.name, n: avis.length, perdus: perdus.length, pages, partiel: out.partiel };
+}
+async function recentsAll() {
+  await chargerFiches();
+  const out = {};
+  await Promise.all(FICHES.map(async f => { const v = await getJSON('recents/' + f.name, null); if (v) { delete v.vus; out[f.name] = v; } }));
+  return out;
+}
+
+module.exports = { snapAvis, snapAvisOne, snapRank, snapRankSel, recolter, allData, rankCooldown, relink, chargerFiches, fiches: () => FICHES, getJSON, setJSON, normName, pickMatch, paysDe, snapRecentsOne, getVue, setVue };

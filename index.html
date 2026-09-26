@@ -215,6 +215,7 @@ tr.alert{background:var(--bad-soft)}tr.alert:hover{background:#fbe0e6}
     <button class="btn btn-add" id="btnAdd" onclick="$('modal').style.display='block';$('a_n').focus()">+ Fiche</button>
     <button class="btn btn-avis" id="btnCmd" onclick="ouvrirCommande()">🛒 Commander des avis</button>
     <button class="btn btn-rank" id="btnRecale" onclick="recaleBase()" style="display:none;border-color:var(--bad);color:var(--bad)">⚖ Recaler la base</button>
+    <button class="btn btn-rank" id="btnVue" onclick="reglerVue()" style="display:none">⚙ Avis</button>
   </div>
 </div>
 <div class="msg" id="msg"></div>
@@ -295,6 +296,7 @@ async function load(){
     const r = await fetch('/.netlify/functions/data');
     DATA = await r.json();
     KW = DATA.kwover || {}; OBJ = DATA.objover || {}; LIV = DATA.livover || {}; RKW = DATA.rankKw || {};
+    VUE = DATA.vue || { mode: 'total', fiches: {} }; REC = DATA.recents || {};
     render();
   }catch(e){ msg('Erreur de chargement — réessaie dans une minute') }
 }
@@ -303,6 +305,12 @@ var ROWS = [], FILT = 'all', MET = 'all', SORT = null, SDIR = 1, Q = '';
 // KW : mots-clés choisis dans le tableau (blob 'kw', « kw1 | kw2 »), OBJ : objectifs modifiés (blob 'obj'),
 // LIV : postés corrigés à la main (blob 'livres', admin), RKW : dernière position connue par mot-clé, SEL : fiches cochées.
 var KW = {}, OBJ = {}, LIV = {}, RKW = {}, SEL = new Set();
+// Vue des avis choisie par Rayan (?admin) : 'total' = compteur Google ; 'recents' = avis publiés depuis une date,
+// lus un par un sur Google (« Plus récents »). REC : dernier relevé par fiche {n, depuis, avis, perdus, releve}.
+var VUE = { mode: 'total', fiches: {} }, REC = {};
+const RECENTS = () => VUE.mode === 'recents';
+function depuisDe(f){ return (VUE.fiches && VUE.fiches[f.name]) || VUE.depuis || null; }
+function jjmm(d){ return d ? String(d).slice(8, 10) + '/' + String(d).slice(5, 7) : ''; }
 function escAttr(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function norm(s){ return String(s == null ? '' : s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
 function kwsOf(f){ return String(KW[f.name] || f.kw || '').split(/\s*[|;]\s*/).map(x => x.trim()).filter(Boolean).slice(0, 3); }
@@ -633,12 +641,17 @@ function render(){
   const postesDe = f => livEff(f);
   // Les avis postes saisis a la main priment sur tout : ils comptent meme si la fiche n'a pas
   // encore de base de reference ou pas encore de releve Google (fiche recemment ajoutee).
-  const gainDe = (f, n) => { const p = postesDe(f); if (p !== null) return p; if (n == null || BASE[f.name] == null) return null; return Math.max(0, n - BASE[f.name]); };
+  // En vue « avis recents », c'est le nombre d'avis publies depuis la date choisie qui compte.
+  const gainDe = (f, n) => { if (RECENTS() && REC[f.name]) return REC[f.name].n; const p = postesDe(f); if (p !== null) return p; if (n == null || BASE[f.name] == null) return null; return Math.max(0, n - BASE[f.name]); };
   const hNb = document.getElementById('hNb'); if (hNb) hNb.textContent = fiches.length;
   ['hNb2','navNb'].forEach(id => { const e = document.getElementById(id); if (e) e.textContent = fiches.length; });
   const bC = document.getElementById('btnC3'); if (bC && !bC.disabled) bC.textContent = '🗓 3 jours (' + fiches.length + ' rech. SerpAPI)';
-  const bA = document.getElementById('btnAvis'); if (bA && !bA.disabled) bA.textContent = '↻ Actualiser AVIS (' + fiches.length + ' fiches · ' + (fiches.length * 0.02).toFixed(2).replace('.', ',') + ' $)';
-  if (admin) $('btnRecale').style.display = '';
+  const bA = document.getElementById('btnAvis'); if (bA && !bA.disabled) bA.textContent = RECENTS()
+    ? '↻ Actualiser les avis récents (' + fiches.length + ' fiches · ~' + fiches.length + ' rech. SerpAPI)'
+    : '↻ Actualiser AVIS (' + fiches.length + ' fiches · ' + (fiches.length * 0.02).toFixed(2).replace('.', ',') + ' $)';
+  if (admin) { $('btnRecale').style.display = ''; $('btnVue').style.display = ''; $('btnVue').textContent = '⚙ Avis : ' + (RECENTS() ? 'récents depuis le ' + jjmm(VUE.depuis) : 'total Google'); }
+  const lbl = document.querySelector('#stTotal') && document.querySelector('#stTotal').parentNode.querySelector('.stat-lbl');
+  if (lbl) lbl.textContent = RECENTS() ? 'Avis depuis le ' + jjmm(VUE.depuis) : 'Total avis';
   // Un relevé du jour peut être partiel (vague en échec) : chaque fiche garde sa dernière valeur
   // connue, l'avant-dernière sert à la variation. Sinon le total du jour tombait de 480 à 297.
   const aNow = {}, aPrev = {};
@@ -681,7 +694,17 @@ function render(){
       : f.link;
 
     let avisCell;
-    if (!pid) avisCell = '<span class="unlinked">non liée ⚠</span>';
+    const rc = REC[f.name];
+    if (RECENTS()) {
+      if (!pid) avisCell = '<span class="unlinked">non liée ⚠</span>';
+      else if (!rc) avisCell = '<span class="fcity" title="Pas encore relevé depuis le choix de la date">—</span>';
+      else {
+        avisCell = '<b title="Avis publiés sur Google depuis le ' + jjmm(rc.depuis) + ' (relevé du ' + jjmm(rc.releve) + ')">' + rc.n + '</b><span class="fcity"> depuis le ' + jjmm(rc.depuis) + '</span>';
+        if (admin && rc.perdus && rc.perdus.length) avisCell += ' <span class="perdus" title="Avis vus lors d\'un relevé précédent, retirés depuis par Google">−' + rc.perdus.length + ' disparus</span>';
+        if (n != null) avisCell += '<div class="cnt2"><span class="fcity">' + n + ' au total</span></div>';
+      }
+    }
+    else if (!pid) avisCell = '<span class="unlinked">non liée ⚠</span>';
     else if (n == null) avisCell = '<span class="fcity">—</span>';
     else {
       avisCell = '<b title="Total actuel sur Google">' + n + '</b>';
@@ -691,7 +714,7 @@ function render(){
     }
     // Trois chiffres clairs : Google (total), Postés (+N), Perdus (−M anciens, seulement si négatif)
     const postes = postesDe(f);
-    if (postes !== null || admin) {
+    if (!RECENTS() && (postes !== null || admin)) {
       const perdus = (postes !== null && BASE[f.name] != null && n != null) ? n - (BASE[f.name] + postes) : null;
       avisCell += '<div class="cnt2"><span class="postes" title="Avis marqués postés">' + (postes !== null ? '+' + postes + ' postés' : '— postés') + '</span>' +
         (LIV[f.name] != null && LIV[f.name] !== '' ? '<span class="manuel" title="corrigé à la main">manuel</span>' : '') +
@@ -760,7 +783,8 @@ function render(){
   applyView();
   updSelBtn();
   const dTot = totPrev ? pairNow - totPrev : 0;
-  $('stTotal').innerHTML = total + (dTot > 0 ? '<small>+' + dTot + '</small>' : '');
+  if (RECENTS()) $('stTotal').innerHTML = Object.keys(REC).filter(k => fiches.some(f => f.name === k)).reduce((s, k) => s + (REC[k].n || 0), 0) + '<small>sur ' + total + '</small>';
+  else $('stTotal').innerHTML = total + (dTot > 0 ? '<small>+' + dTot + '</small>' : '');
   $('stDay').textContent = totPrev ? ((dTot > 0 ? '+' : '') + dTot) : '—';
   $('stNote').textContent = notes.length ? (notes.reduce((a,b)=>a+b,0)/notes.length).toFixed(2) + ' ★' : '—';
   $('stLink').textContent = linked + ' / ' + fiches.length;
@@ -788,7 +812,54 @@ function render(){
   });
 }
 
+// Avis récents : une fiche par appel (≤ 3 pages SerpAPI), 4 fiches en parallèle.
+async function runRecents(liste){
+  const fs = (DATA && DATA.fiches) || [], ids = (DATA && DATA.ids) || {};
+  const todo = (liste || fs.map((f, i) => i)).filter(i => fs[i] && ids[fs[i].name]);
+  if (!depuisDe(fs[todo[0]] || {}) && !VUE.depuis) { msg('Date « depuis » non réglée (admin : ⚙ Avis)'); return; }
+  $('btnAvis').disabled = true;
+  let fait = 0, ok = 0, err = null, k = 0;
+  async function worker(){ while (k < todo.length) { const i = todo[k++];
+    try { const j = await fetch('/.netlify/functions/run?type=recents1&i=' + i).then(r => r.json()); if (j.ok) ok++; else err = j.motif; } catch (e) { err = String(e); }
+    fait++; msg('Avis récents — ' + fait + '/' + todo.length + ' fiches…'); } }
+  try { await Promise.all([worker(), worker(), worker(), worker()]); await load(); } catch (e) {}
+  msg(ok === todo.length ? 'Avis récents relevés ✓ (' + ok + ' fiches)' : ok + '/' + todo.length + ' fiches relevées' + (err ? ' — ' + err : '') + ' · reclique pour compléter');
+  $('btnAvis').disabled = false;
+}
+// Réglage de la vue (Rayan, ?admin) : total Google ou avis récents depuis une date.
+async function reglerVue(){
+  if (!admin) return;
+  const recents = window.confirm('Afficher les AVIS RÉCENTS (publiés depuis une date) ?\n\nOK = avis récents · Annuler = total Google');
+  let depuis = VUE.depuis || '';
+  if (recents) {
+    const v = window.prompt('Depuis quand ? (JJ/MM/AAAA, ou un nombre de jours : 7, 14…)', depuis ? jjmm(depuis) + '/' + depuis.slice(0, 4) : '7');
+    if (v === null) return;
+    const m = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/.exec(v.trim());
+    if (m) depuis = (m[3] || new Date().getFullYear()) + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+    else if (/^\d+$/.test(v.trim())) { const d = new Date(Date.now() - parseInt(v, 10) * 86400000); depuis = d.toISOString().slice(0, 10); }
+    else { msg('Date non comprise'); return; }
+  }
+  const j = await fetch('/.netlify/functions/run?type=setvue', { method: 'POST', body: JSON.stringify({ mode: recents ? 'recents' : 'total', depuis: depuis }) }).then(r => r.json()).catch(() => null);
+  if (!j || !j.ok) { msg('Réglage non enregistré'); return; }
+  msg(recents ? 'Vue : avis récents depuis le ' + jjmm(depuis) + ' — clique « Actualiser » pour les relever' : 'Vue : total Google');
+  await load();
+}
+async function reglerDepuisFiche(i){
+  if (!admin) return;
+  const f = DATA.fiches[i]; const cur = (VUE.fiches || {})[f.name] || '';
+  const v = window.prompt('Date « depuis » pour « ' + f.name + ' » (JJ/MM/AAAA, vide = date générale)', cur ? jjmm(cur) + '/' + cur.slice(0, 4) : '');
+  if (v === null) return;
+  let d = '';
+  const m = /^(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?$/.exec(v.trim());
+  if (m) d = (m[3] || new Date().getFullYear()) + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+  else if (v.trim()) { msg('Date non comprise'); return; }
+  const set = {}; set[f.name] = d;
+  await fetch('/.netlify/functions/run?type=setvue', { method: 'POST', body: JSON.stringify({ fiches: set }) });
+  await load(); ouvrirFiche(i, 'reg');
+}
+
 async function runAvis(){
+  if (RECENTS()) return runRecents();
   $('btnAvis').disabled = true;
   // Une requete par vague de 12 fiches : en une seule requete, la fonction Netlify
   // depassait sa limite de 10 s et etait tuee en cours de route.
@@ -924,7 +995,7 @@ function ouvrirFiche(i, tab){
   const rHist = rDates.map(d => ({ d, p: rank[d][f.name] }));
   const rLast = rHist[rHist.length - 1];
   const pid = ids[f.name], obj = objEff(f), postes = livEff(f);
-  const gained = (postes !== null) ? postes : ((last && last.n != null && base[f.name] != null) ? Math.max(0, last.n - base[f.name]) : null);
+  const gained = (RECENTS() && REC[f.name]) ? REC[f.name].n : (postes !== null) ? postes : ((last && last.n != null && base[f.name] != null) ? Math.max(0, last.n - base[f.name]) : null);
   const mapsUrl = pid ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(f.name) + '&query_place_id=' + pid : f.link;
   const rk = RKW[f.name] || {}, kws = kwsOf(f);
   const posTxt = p => p === undefined ? '—' : p === null ? 'absent du bloc local' : '#' + p;
@@ -944,7 +1015,12 @@ function ouvrirFiche(i, tab){
       '<div class="k"><label>Liaison Google</label><div class="v" style="font-size:.9rem">' + (pid ? '<span style="color:var(--ok)">liée ✓</span>' : '<span style="color:var(--bad)">non liée</span>') + (base[f.name] != null ? '<small> · base ' + base[f.name] + ' avis</small>' : '') + '</div></div>' +
     '</div><div class="row"><button class="btn btn-avis" onclick="ouvrirCommandePour(' + i + ')">🛒 Commander des avis pour cette fiche</button>' + (pid ? '<button class="btn" data-i="' + i + '" onclick="refreshOne(this)">↻ Actualiser cette fiche</button>' : '') + '</div></div>' +
     // Avis
-    '<div class="tab' + (tab === 'avis' ? ' on' : '') + '" data-t="avis">' + (hist.length > 1 ? '<canvas id="sheetChart" height="120"></canvas>' : '<p class="note">Deux relevés sont nécessaires pour tracer l\'évolution.</p>') +
+    '<div class="tab' + (tab === 'avis' ? ' on' : '') + '" data-t="avis">' + (RECENTS() ? (function(){ const rc = REC[f.name];
+      if (!rc) return '<p class="note">Avis récents pas encore relevés pour cette fiche.</p>' + (pid ? '<div class="row"><button class="btn" onclick="runRecents([' + i + '])">↻ Relever les avis récents</button></div>' : '');
+      return '<p class="note"><b>' + rc.n + ' avis</b> publiés depuis le ' + jjmm(rc.depuis) + ' · relevé du ' + jjmm(rc.releve) + ' (Google, « Plus récents »)</p>' +
+        '<div class="hist">' + (rc.avis || []).map(a => '<div class="hrow"><span class="dot"></span><div><b>' + escAttr(a.a || 'Anonyme') + '</b>' + (a.r ? ' <small>' + a.r + ' ★</small>' : '') + '<small>' + jjmm(a.d) + (a.t ? ' · ' + escAttr(a.t.length > 90 ? a.t.slice(0, 88) + '…' : a.t) : '') + '</small></div></div>').join('') + '</div>' +
+        (admin && rc.perdus && rc.perdus.length ? '<p class="note" style="color:var(--bad)">Disparus (' + rc.perdus.length + ') :</p><div class="hist">' + rc.perdus.map(a => '<div class="hrow"><span class="dot" style="background:var(--bad)"></span><div><b>' + escAttr(a.a || 'Anonyme') + '</b><small>publié le ' + jjmm(a.d) + ' · disparu le ' + jjmm(a.disparu) + '</small></div></div>').join('') + '</div>' : '') +
+        '<div class="row"><button class="btn" onclick="runRecents([' + i + '])">↻ Relever cette fiche</button></div>'; })() + '<p class="note">Historique du total Google :</p>' : '') + (hist.length > 1 ? '<canvas id="sheetChart" height="120"></canvas>' : '<p class="note">Deux relevés sont nécessaires pour tracer l\'évolution.</p>') +
       '<div class="hist">' + (hist.length ? hist.slice().reverse().slice(0, 40).map((x, k, all) => { const p = all[k + 1]; return '<div class="hrow"><span class="dot"></span><div><b>' + x.n + ' avis</b>' + (p ? ' <span class="delta ' + (x.n - p.n < 0 ? 'down' : 'up') + '">' + (x.n - p.n > 0 ? '+' : '') + (x.n - p.n) + '</span>' : '') + '<small>' + x.d + (x.r ? ' · ' + x.r.toFixed(1) + ' ★' : '') + '</small></div></div>'; }).join('') : '<p class="note">Aucun relevé.</p>') + '</div></div>' +
     // Positions
     '<div class="tab' + (tab === 'pos' ? ' on' : '') + '" data-t="pos"><div class="kv">' + kws.map((k, ki) => { let e = rk[k]; if (!e && ki === 0 && rLast) e = { pos: rLast.p, date: rLast.d }; return '<div class="k"><label>' + escAttr(k) + '</label><div class="v"><span class="pos ' + posCls(e ? e.pos : undefined) + '">' + (e ? (e.pos === null ? 'absent' : '#' + e.pos) : '—') + '</span>' + (e ? '<small> le ' + e.date + '</small>' : '') + '</div></div>'; }).join('') + '</div>' +
@@ -954,6 +1030,7 @@ function ouvrirFiche(i, tab){
     '<div class="tab' + (tab === 'reg' ? ' on' : '') + '" data-t="reg">' +
       '<label class="field">Mots-clés de classement (jusqu\'à 3, séparés par |)</label>' + kwCell(f, i).replace('class="kwin', 'class="kwin in') +
       '<label class="field">Objectif (avis à gagner)</label><div class="row" style="margin-top:0"><span class="pos ' + (gained !== null && obj && gained >= obj ? 'top' : 'none') + '">' + (obj ? '+' + obj : '—') + '</span><button class="btn" onclick="editObj(' + i + ')">Modifier l\'objectif</button></div>' +
+      (admin && RECENTS() ? '<label class="field">Avis récents depuis le (admin)</label><div class="row" style="margin-top:0"><span class="pos none">' + jjmm(depuisDe(f)) + ((VUE.fiches || {})[f.name] ? ' <small>propre à la fiche</small>' : ' <small>date générale</small>') + '</span><button class="btn" onclick="reglerDepuisFiche(' + i + ')">Changer la date</button></div>' : '') +
       (admin ? '<label class="field">Avis postés (admin)</label><div class="row" style="margin-top:0"><span class="pos none">' + (postes !== null ? '+' + postes : '—') + '</span><button class="btn" onclick="editLiv(' + i + ')">Corriger les postés</button></div>' : '') +
       (f.ajout ? '<p class="note">Fiche ajoutée le ' + escAttr(f.ajout.date || '') + (admin ? ' · <button class="del" onclick="supprimerFiche(\'' + f.ajout.id + '\',\'' + escAttr(f.name).replace(/'/g, "\\'") + '\')">retirer</button>' : '') + '</p>' : '') +
     '</div>';
