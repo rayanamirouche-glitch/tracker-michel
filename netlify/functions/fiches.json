@@ -771,5 +771,57 @@
     "region": "Nice",
     "obj": 20,
     "commande": 20
+  },
+  {
+    "name": "Couvreur Lorgues Mon Couvreur",
+    "q": "Couvreur Lorgues Mon Couvreur",
+    "target": "couvreur lorgues mon",
+    "ll": "43.492,6.359",
+    "kw": "couvreur lorgues",
+    "city": "Lorgues",
+    "link": "https://maps.google.com/?cid=2505241032049908727",
+    "region": "Nice",
+    "obj": 40,
+    "type": "avis",
+    "commande": 40
+  },
+  {
+    "name": "Couvreur Cuges-Les-Pins Père Et Fils",
+    "q": "Couvreur Cuges-Les-Pins Père Et Fils",
+    "target": "couvreur cuges-les-pins pere",
+    "ll": "43.277,5.700",
+    "kw": "couvreur cuges-les-pins",
+    "city": "Cuges-les-Pins",
+    "link": "https://maps.google.com/?cid=17297394331400226197",
+    "region": "Nice",
+    "obj": 5,
+    "type": "avis",
+    "commande": 5
+  },
+  {
+    "name": "Couvreur Saint-Raphaël SQ Compagnon",
+    "q": "Couvreur Saint-Raphaël SQ Compagnon",
+    "target": "couvreur saint-raphael sq",
+    "ll": "43.435,6.783",
+    "kw": "couvreur saint-raphaël",
+    "city": "Saint-Raphaël",
+    "link": "https://maps.google.com/?cid=12881660825594486617",
+    "region": "Nice",
+    "obj": 25,
+    "type": "avis",
+    "commande": 25
+  },
+  {
+    "name": "Couvreur Carqueiranne Mon Couvreur Devis Gratuit",
+    "q": "Couvreur Carqueiranne Mon Couvreur Devis Gratuit",
+    "target": "couvreur carqueiranne mon",
+    "ll": "43.095,6.074",
+    "kw": "couvreur carqueiranne",
+    "city": "Carqueiranne",
+    "link": "https://maps.google.com/?cid=855834706352151990",
+    "region": "Nice",
+    "obj": 30,
+    "type": "avis",
+    "commande": 30
   }
 ]
