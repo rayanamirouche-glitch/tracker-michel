@@ -383,7 +383,7 @@
     "obj": 40,
     "type": "avis",
     "commande": 40,
-    "livres": 10
+    "livres": 23
   },
   {
     "name": "Toiture du canton 83",
@@ -520,7 +520,7 @@
     "region": "Belgique",
     "obj": 50,
     "commande": 50,
-    "livres": 15
+    "livres": 9
   },
   {
     "name": "Platinium toit artisan père fils — Couvreur au Pradet",
@@ -534,7 +534,7 @@
     "obj": 50,
     "type": "avis",
     "commande": 50,
-    "livres": 2
+    "livres": 4
   },
   {
     "name": "Couvreur Bruxelles ROOF Pro toiturier",
@@ -547,7 +547,7 @@
     "region": "Nice",
     "obj": 55,
     "commande": 55,
-    "livres": 8
+    "livres": 3
   },
   {
     "name": "Les Artisans",
@@ -560,7 +560,7 @@
     "region": "Nice",
     "obj": 50,
     "commande": 50,
-    "livres": 4
+    "livres": 11
   },
   {
     "name": "Les Couvreurs",
@@ -573,21 +573,21 @@
     "region": "Nice",
     "obj": 50,
     "commande": 50,
-    "livres": 5
+    "livres": 12
   },
   {
     "name": "Protect Habitat 40",
     "q": "Protect Habitat 40",
-    "target": "protect habitat 40",
+    "target": "extermination nuisibles nancy",
     "ll": "48.694,6.183",
-    "kw": "couvreur nancy",
+    "kw": "extermination nuisibles nancy",
     "city": "Nancy",
     "link": "https://maps.app.goo.gl/e3YyCbXt3FjyAEZA7",
     "region": "Nice",
     "obj": 50,
     "type": "avis",
     "commande": 50,
-    "livres": 4
+    "livres": 10
   },
   {
     "name": "David Toiture Draguignan",
@@ -600,22 +600,7 @@
     "region": "Nice",
     "obj": 120,
     "commande": 120,
-    "livres": 5
-  },
-  {
-    "name": "Couvreur La Valette-Du-Var SP Toiture",
-    "q": "Couvreur La Valette-Du-Var SP Toiture",
-    "target": "couvreur la valette-du-var",
-    "ll": "43.138,5.983",
-    "kw": "couvreur la valette du var",
-    "city": "La Valette Du Var",
-    "link": "https://maps.app.goo.gl/rU5XZgmMesx27iLA6",
-    "region": "Nice",
-    "obj": 30,
-    "type": "avis",
-    "commande": 30,
-    "commande_note": "3/j",
-    "livres": 3
+    "livres": 10
   },
   {
     "name": "Couvreur Saint-Paul-De-Vence BF Toit",
@@ -735,7 +720,8 @@
     "link": "https://maps.app.goo.gl/qzAgyCb3VvoHqAUj8",
     "region": "Nice",
     "obj": 30,
-    "commande": 30
+    "commande": 30,
+    "livres": 4
   },
   {
     "name": "Couvreur La Trinité 06 VM Compagnon Couvreur",
@@ -759,7 +745,8 @@
     "link": "https://maps.app.goo.gl/e28Evtz2UESvVzdF8",
     "region": "Nice",
     "obj": 35,
-    "commande": 35
+    "commande": 35,
+    "type": "avis"
   },
   {
     "name": "SOS Toiture Néoules",
