@@ -823,5 +823,42 @@
     "obj": 30,
     "type": "avis",
     "commande": 30
+  },
+  {
+    "name": "Bormes toiture experts 83",
+    "q": "Bormes toiture experts 83",
+    "target": "bormes toiture experts",
+    "ll": "43.149,6.343",
+    "kw": "couvreur bormes les mimosas",
+    "city": "Bormes-les-Mimosas",
+    "link": "https://maps.app.goo.gl/sdamwTujYj8vsc8h8",
+    "region": "Var",
+    "type": "avis",
+    "obj": 25,
+    "commande": 25
+  },
+  {
+    "name": "Couverture toiture pro expert Sisteron",
+    "q": "Couverture toiture pro expert Sisteron",
+    "target": "couverture toiture pro",
+    "ll": "44.188,5.944",
+    "kw": "couvreur sisteron",
+    "city": "Sisteron",
+    "link": "https://maps.app.goo.gl/kQTFzeDq2WA7RvYX7",
+    "region": "Var",
+    "type": "avis",
+    "obj": 10,
+    "commande": 10
+  },
+  {
+    "name": "Couvreur Ollioules Père Et Fils / Fuite Toiture / Réparations Toiture",
+    "q": "Couvreur Ollioules Père Et Fils / Fuite Toiture / Réparations Toiture",
+    "target": "couvreur ollioules père",
+    "ll": "43.140,5.848",
+    "kw": "couvreur ollioules",
+    "city": "Ollioules",
+    "link": "https://maps.app.goo.gl/r4ryU9zy7Zb3oXRWA",
+    "region": "Var",
+    "type": "avis"
   }
 ]
