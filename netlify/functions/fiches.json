@@ -11,7 +11,9 @@
     "obj": 90,
     "type": "avis",
     "commande": 90,
-    "livres": 34
+    "livres": 34,
+    "kg": "/g/1w2j4hfr",
+    "cid": "15003794716699579384"
   },
   {
     "name": "ARTISANS ID TOITURE CHARPENTIER 83",
@@ -25,7 +27,9 @@
     "obj": 30,
     "type": "avis",
     "commande": 30,
-    "livres": 28
+    "livres": 28,
+    "kg": "/g/11fmbkn_st",
+    "cid": "9790818591641078806"
   },
   {
     "name": "Artisan IMD Couvreur Charpentier Père Et Fils (devis Et Déplacement Gratuit)",
@@ -39,7 +43,9 @@
     "obj": 40,
     "type": "avis",
     "commande": 40,
-    "livres": 19
+    "livres": 19,
+    "kg": "/g/11h4dghxcj",
+    "cid": "10712094096532641859"
   },
   {
     "name": "Artisan couvreur charpentier zingueur etancheur Fréjus",
@@ -53,7 +59,9 @@
     "obj": 85,
     "type": "avis",
     "commande": 85,
-    "livres": 21
+    "livres": 21,
+    "kg": "/g/11n5bsxb2_",
+    "cid": "10061679078629872920"
   },
   {
     "name": "Couvreur Cabasse - Toiture Artisan",
@@ -64,7 +72,9 @@
     "city": "Cabasse",
     "link": "https://maps.app.goo.gl/7CKTSGEJ5SmBRf8N6",
     "region": "Var",
-    "obj": 10
+    "obj": 10,
+    "kg": "/g/11xlbqlknx",
+    "cid": "6435352704085542200"
   },
   {
     "name": "St maxime pro toiture",
@@ -78,7 +88,9 @@
     "obj": 95,
     "type": "avis",
     "commande": 95,
-    "livres": 15
+    "livres": 15,
+    "kg": "/g/11njtmdrfy",
+    "cid": "16936477591498745525"
   },
   {
     "name": "SOS Toiture Six Fours Les Plages",
@@ -92,7 +104,9 @@
     "obj": 20,
     "type": "avis",
     "commande": 20,
-    "livres": 11
+    "livres": 11,
+    "kg": "/g/11z4t9g6v0",
+    "cid": "14252035966354691583"
   },
   {
     "name": "Pro Toiture 06",
@@ -103,7 +117,9 @@
     "city": "06",
     "link": "https://maps.app.goo.gl/PvRRNJ9P15hrb59r5",
     "region": "Nice",
-    "obj": 10
+    "obj": 10,
+    "kg": "/g/11m6n70p9_",
+    "cid": "9262722089816965249"
   },
   {
     "name": "ID toiture pere et fils",
@@ -116,7 +132,9 @@
     "region": "Var",
     "obj": 150,
     "type": "avis",
-    "commande": 150
+    "commande": 150,
+    "kg": "/g/11zkx90zz8",
+    "cid": "4980774892972812235"
   },
   {
     "name": "Marc Toiture & Charpente",
@@ -129,7 +147,9 @@
     "region": "Var",
     "obj": 30,
     "type": "avis",
-    "commande": 30
+    "commande": 30,
+    "kg": "/g/1tk5qk43",
+    "cid": "17282043572811704127"
   },
   {
     "name": "Artisan Couvreur la Seyne Pére Et Fils",
@@ -143,7 +163,9 @@
     "obj": 30,
     "type": "avis",
     "commande": 30,
-    "livres": 14
+    "livres": 14,
+    "kg": "/g/11l2yq738q",
+    "cid": "8977199694118524662"
   },
   {
     "name": "OZ Toit professionnel grimaud couvreur",
@@ -154,7 +176,9 @@
     "city": "Grimaud",
     "link": "https://maps.app.goo.gl/6VHHiP13eUV1Ao9ZA",
     "region": "Var",
-    "obj": 20
+    "obj": 20,
+    "kg": "/g/11z8tnr5r3",
+    "cid": "8468139975679539453"
   },
   {
     "name": "Compagnon Couvreur Grimaud ETF",
@@ -165,7 +189,9 @@
     "city": "Grimaud",
     "link": "https://maps.app.goo.gl/oRPPJmDDXqeoyXbF6",
     "region": "Var",
-    "obj": 25
+    "obj": 25,
+    "kg": "/g/11krbqn1wv",
+    "cid": "16228030167170265456"
   },
   {
     "name": "Cogolin ST couverture élite",
@@ -176,7 +202,9 @@
     "city": "Cogolin",
     "link": "https://maps.app.goo.gl/uGWKXHdgwY4ZZvzg6",
     "region": "Var",
-    "obj": 20
+    "obj": 20,
+    "kg": "/g/11z3k4wxm0",
+    "cid": "5246473807964123742"
   },
   {
     "name": "Couverture expert gassin",
@@ -187,7 +215,9 @@
     "city": "Gassin",
     "link": "https://maps.app.goo.gl/jSBSzC4uL668Lo8r7",
     "region": "Var",
-    "obj": 10
+    "obj": 10,
+    "kg": "/g/11npb2xnwn",
+    "cid": "9908653066412183750"
   },
   {
     "name": "Couvreur - Intervention Demoussage",
@@ -198,7 +228,9 @@
     "city": "Draguignan",
     "link": "https://maps.app.goo.gl/9NaLmnMWNChWeprA9",
     "region": "Var",
-    "obj": 10
+    "obj": 10,
+    "kg": "/g/11xtv3xzmj",
+    "cid": "11643238726381735511"
   },
   {
     "name": "Couvreur la gaude",
@@ -212,7 +244,9 @@
     "obj": 20,
     "type": "avis",
     "commande": 20,
-    "livres": 5
+    "livres": 5,
+    "kg": "/g/11j1d_jz8x",
+    "cid": "10417127282080855044"
   },
   {
     "name": "Couvreur Carqueiranne Père Et Fils",
@@ -224,7 +258,9 @@
     "link": "https://maps.app.goo.gl/e1yUDdzp3Ev3AcUn6",
     "region": "Var",
     "obj": 19,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11ywd6mf90",
+    "cid": "5713179839161792672"
   },
   {
     "name": "Pro Couvreur Charpentier Étanchéité Toit Terasse cavalaire",
@@ -237,7 +273,9 @@
     "region": "Var",
     "obj": 25,
     "type": "avis",
-    "commande": 25
+    "commande": 25,
+    "kg": "/g/11x0g3vrzn",
+    "cid": "12571817561364860851"
   },
   {
     "name": "Pro Toiturier",
@@ -251,7 +289,9 @@
     "obj": 100,
     "type": "avis",
     "commande": 100,
-    "livres": 11
+    "livres": 11,
+    "kg": "/g/11zh8ph78s",
+    "cid": "9050857862562537946"
   },
   {
     "name": "Couvreur le Cannet 06",
@@ -265,7 +305,9 @@
     "obj": 15,
     "type": "avis",
     "commande": 15,
-    "livres": 10
+    "livres": 10,
+    "kg": "/g/11nttdgx6q",
+    "cid": "2366348066787594756"
   },
   {
     "name": "Expert Toiture 06 & Fils",
@@ -279,7 +321,9 @@
     "obj": 70,
     "type": "avis",
     "commande": 70,
-    "livres": 17
+    "livres": 17,
+    "kg": "/g/11zdc47flt",
+    "cid": "15653902683120100798"
   },
   {
     "name": "Couvreur Toulon Dems",
@@ -291,7 +335,9 @@
     "link": "https://maps.app.goo.gl/YgDwAtciQTYMSpHL8",
     "region": "Var",
     "obj": 15,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11zd8wyqpr",
+    "cid": "9351232842512063215"
   },
   {
     "name": "Spécialisé Toiture 83",
@@ -303,7 +349,9 @@
     "link": "https://maps.app.goo.gl/U7PPQkcobvPvL7cL8",
     "region": "Var",
     "obj": 10,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11zhhrk7h_",
+    "cid": "2677614752422706563"
   },
   {
     "name": "Couvreur du plan 83",
@@ -315,7 +363,9 @@
     "link": "https://maps.app.goo.gl/6xjneMLZHxuumNfDA",
     "region": "Var",
     "obj": 10,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11zd8x2x0z",
+    "cid": "18404857333602379785"
   },
   {
     "name": "Super couverture",
@@ -329,7 +379,9 @@
     "obj": 10,
     "type": "avis",
     "commande": 10,
-    "livres": 4
+    "livres": 4,
+    "kg": "/g/11zbjrqj86",
+    "cid": "10903238030913553580"
   },
   {
     "name": "Couvreur Cannes & Fils SP Toiture",
@@ -343,7 +395,9 @@
     "obj": 70,
     "type": "avis",
     "commande": 70,
-    "livres": 3
+    "livres": 3,
+    "kg": "/g/11l6tt_zn2",
+    "cid": "2839402400606870785"
   },
   {
     "name": "Couvreur La Colle-Sur-Loup Expert 06",
@@ -357,7 +411,9 @@
     "obj": 70,
     "type": "avis",
     "commande": 70,
-    "livres": 21
+    "livres": 21,
+    "kg": "/g/11qqd7x8bw",
+    "cid": "270020498873946011"
   },
   {
     "name": "Couvreur agay père et fils azur",
@@ -369,7 +425,9 @@
     "link": "https://maps.app.goo.gl/zipr9eJnVHKW6A6p8",
     "region": "Var",
     "obj": 10,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11nqsnrk6t",
+    "cid": "14040111311950114651"
   },
   {
     "name": "Couvreur hyères les palmiers",
@@ -383,7 +441,9 @@
     "obj": 40,
     "type": "avis",
     "commande": 40,
-    "livres": 23
+    "livres": 23,
+    "kg": "/g/11zh6y2k8x",
+    "cid": "6944364612418338771"
   },
   {
     "name": "Toiture du canton 83",
@@ -409,7 +469,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 2
+    "livres": 2,
+    "kg": "/g/11zfb3qqpv",
+    "cid": "12828067048892649813"
   },
   {
     "name": "Exterminateur Rixensart | Vermitek, spécialiste charpente",
@@ -423,7 +485,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 2
+    "livres": 2,
+    "kg": "/g/11nvmg6gqx",
+    "cid": "14043886191250381840"
   },
   {
     "name": "Exterminateur Woluwe-Saint-Pierre – Sanibois, charpente & toiture",
@@ -437,7 +501,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 2
+    "livres": 2,
+    "kg": "/g/11zx70xhrz",
+    "cid": "15134596587335047048"
   },
   {
     "name": "Termifuge Ixelles, dératisation & traitement du bois",
@@ -451,7 +517,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 1
+    "livres": 1,
+    "kg": "/g/11zx70s7fd",
+    "cid": "16265605306089206203"
   },
   {
     "name": "Mérulex – exterminateur charpente & mérule à Liège",
@@ -465,7 +533,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 2
+    "livres": 2,
+    "kg": "/g/11zfb3rsz9",
+    "cid": "17036297412530275614"
   },
   {
     "name": "Kapricorn Stop · exterminateur charpente à Wavre",
@@ -479,7 +549,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 3
+    "livres": 3,
+    "kg": "/g/11zfb3xqf7",
+    "cid": "4427261782962797148"
   },
   {
     "name": "Traitement Charpente Waterloo — Nuisibio",
@@ -493,7 +565,9 @@
     "obj": 5,
     "type": "page",
     "commande": 5,
-    "livres": 2
+    "livres": 2,
+    "kg": "/g/11zfb3_t57",
+    "cid": "4900929901664603658"
   },
   {
     "name": "Woodgard, exterminateur nuisibles à Woluwe-Saint-Lambert",
@@ -520,7 +594,9 @@
     "region": "Belgique",
     "obj": 50,
     "commande": 50,
-    "livres": 9
+    "livres": 9,
+    "kg": "/g/11zxgrrxjr",
+    "cid": "7883940502001648312"
   },
   {
     "name": "Platinium toit artisan père fils — Couvreur au Pradet",
@@ -534,7 +610,9 @@
     "obj": 50,
     "type": "avis",
     "commande": 50,
-    "livres": 4
+    "livres": 4,
+    "kg": "/g/11nvjnn65h",
+    "cid": "17354048808590427846"
   },
   {
     "name": "Couvreur Bruxelles ROOF Pro toiturier",
@@ -547,7 +625,9 @@
     "region": "Nice",
     "obj": 55,
     "commande": 55,
-    "livres": 3
+    "livres": 3,
+    "kg": "/g/11zh9y28cr",
+    "cid": "11164562565150230484"
   },
   {
     "name": "Les Artisans",
@@ -560,7 +640,9 @@
     "region": "Nice",
     "obj": 50,
     "commande": 50,
-    "livres": 11
+    "livres": 11,
+    "kg": "/g/11z1kjk741",
+    "cid": "10556788257031264501"
   },
   {
     "name": "Les Couvreurs",
@@ -573,7 +655,9 @@
     "region": "Nice",
     "obj": 50,
     "commande": 50,
-    "livres": 12
+    "livres": 12,
+    "kg": "/g/11hsym64qt",
+    "cid": "17330906825739413190"
   },
   {
     "name": "Protect Habitat 40",
@@ -587,7 +671,9 @@
     "obj": 50,
     "type": "avis",
     "commande": 50,
-    "livres": 10
+    "livres": 10,
+    "kg": "/g/11x73cct3r",
+    "cid": "17091150776811724628"
   },
   {
     "name": "David Toiture Draguignan",
@@ -600,7 +686,9 @@
     "region": "Nice",
     "obj": 120,
     "commande": 120,
-    "livres": 10
+    "livres": 10,
+    "kg": "/g/11w3t6m9wc",
+    "cid": "16366579930884586410"
   },
   {
     "name": "Couvreur Saint-Paul-De-Vence BF Toit",
@@ -612,7 +700,9 @@
     "link": "https://maps.app.goo.gl/U7Qcm9uWUAD4iQzGA",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11zyshj0lx",
+    "cid": "3914594212973327866"
   },
   {
     "name": "Couvreur SOS Ollioules toiture",
@@ -624,7 +714,9 @@
     "link": "https://maps.app.goo.gl/9pBZ6x8QoWUu8HBX9",
     "region": "Nice",
     "obj": 30,
-    "commande": 30
+    "commande": 30,
+    "kg": "/g/11z4g5vqxq",
+    "cid": "9936960188505903092"
   },
   {
     "name": "Couvreur La Londe-Les-Maures 83 Pro",
@@ -648,7 +740,9 @@
     "link": "https://maps.app.goo.gl/46pEXJZDgfVCpr9d9",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11w9q4p29s",
+    "cid": "6254478949759557973"
   },
   {
     "name": "Couvreur Ramatuelle Sos Toiture 83",
@@ -660,7 +754,9 @@
     "link": "https://maps.app.goo.gl/Dan61VqUmTYXKPGR8",
     "region": "Nice",
     "obj": 30,
-    "commande": 30
+    "commande": 30,
+    "kg": "/g/11m6yn21kl",
+    "cid": "2824369160498780225"
   },
   {
     "name": "Fayence toitures Atelier Haut-Pays",
@@ -672,7 +768,9 @@
     "link": "https://maps.app.goo.gl/EHmEXQt2k51sGMbP9",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11nvjp2xyn",
+    "cid": "7096649294940814667"
   },
   {
     "name": "Toulon couverture toiture SOS",
@@ -684,7 +782,9 @@
     "link": "https://maps.app.goo.gl/GDNKAHyg2nBwJF6Q6",
     "region": "Nice",
     "obj": 40,
-    "commande": 40
+    "commande": 40,
+    "kg": "/g/11z9xtdjvz",
+    "cid": "4418492198665503574"
   },
   {
     "name": "Couvreur Villfranchr-Sur-Mer 06",
@@ -696,7 +796,9 @@
     "link": "https://maps.app.goo.gl/iVegujSG8gJbCEHH7",
     "region": "Nice",
     "obj": 40,
-    "commande": 40
+    "commande": 40,
+    "kg": "/g/11zxg7hlf4",
+    "cid": "15872232280933198256"
   },
   {
     "name": "Charpente Artisan La Garde-Freinet Couverture",
@@ -708,7 +810,9 @@
     "link": "https://maps.app.goo.gl/K1kJSGnYzgaqidwV9",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11x316rqq7",
+    "cid": "12203851479934418161"
   },
   {
     "name": "Couvreur des Remparts (Tourrettes-sur-Loup)",
@@ -721,7 +825,9 @@
     "region": "Nice",
     "obj": 30,
     "commande": 30,
-    "livres": 4
+    "livres": 4,
+    "kg": "/g/11nvjqctxd",
+    "cid": "7771911524850998489"
   },
   {
     "name": "Couvreur La Trinité 06 VM Compagnon Couvreur",
@@ -733,7 +839,9 @@
     "link": "https://maps.app.goo.gl/U9oLmDHBE9wP7Pe89",
     "region": "La Trinité",
     "obj": 25,
-    "commande": 25
+    "commande": 25,
+    "kg": "/g/11kqd7ph6r",
+    "cid": "12569699143458415139"
   },
   {
     "name": "Florieye maisons toitures couvreur à Lorgues",
@@ -746,7 +854,9 @@
     "region": "Nice",
     "obj": 35,
     "commande": 35,
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11zf7dz3vw",
+    "cid": "7321686901612894095"
   },
   {
     "name": "SOS Toiture Néoules",
@@ -758,7 +868,9 @@
     "link": "https://maps.app.goo.gl/ch6iRmwe63AiJKbQ9",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11zxfjz766",
+    "cid": "13468206842453383701"
   },
   {
     "name": "Couvreur Champigny-Sur-Marne Artisan Toiture Père Et Fils",
@@ -770,7 +882,9 @@
     "link": "https://maps.app.goo.gl/vJYPr2dGZSPL9sjx7",
     "region": "Nice",
     "obj": 20,
-    "commande": 20
+    "commande": 20,
+    "kg": "/g/11ygdn5b6y",
+    "cid": "9237600481612559802"
   },
   {
     "name": "Couvreur Lorgues Mon Couvreur",
@@ -783,7 +897,9 @@
     "region": "Nice",
     "obj": 40,
     "type": "avis",
-    "commande": 40
+    "commande": 40,
+    "kg": "/g/11nw1y2wx2",
+    "cid": "2505241032049908727"
   },
   {
     "name": "Couvreur Cuges-Les-Pins Père Et Fils",
@@ -796,7 +912,9 @@
     "region": "Nice",
     "obj": 5,
     "type": "avis",
-    "commande": 5
+    "commande": 5,
+    "kg": "/g/11nw1yrbjw",
+    "cid": "17297394331400226197"
   },
   {
     "name": "Couvreur Saint-Raphaël SQ Compagnon",
@@ -809,7 +927,9 @@
     "region": "Nice",
     "obj": 25,
     "type": "avis",
-    "commande": 25
+    "commande": 25,
+    "kg": "/g/11hnw1vk9y",
+    "cid": "12881660825594486617"
   },
   {
     "name": "Couvreur Carqueiranne Mon Couvreur Devis Gratuit",
@@ -822,7 +942,9 @@
     "region": "Nice",
     "obj": 30,
     "type": "avis",
-    "commande": 30
+    "commande": 30,
+    "kg": "/g/11zxmt_lsf",
+    "cid": "855834706352151990"
   },
   {
     "name": "Bormes toiture experts 83",
@@ -835,7 +957,9 @@
     "region": "Var",
     "type": "avis",
     "obj": 25,
-    "commande": 25
+    "commande": 25,
+    "kg": "/g/11zdldlhbp",
+    "cid": "7896236268980531452"
   },
   {
     "name": "Couverture toiture pro expert Sisteron",
@@ -848,7 +972,9 @@
     "region": "Var",
     "type": "avis",
     "obj": 10,
-    "commande": 10
+    "commande": 10,
+    "kg": "/g/11nqbj3k6r",
+    "cid": "486542991636408385"
   },
   {
     "name": "Couvreur Ollioules Père Et Fils / Fuite Toiture / Réparations Toiture",
@@ -859,6 +985,8 @@
     "city": "Ollioules",
     "link": "https://maps.app.goo.gl/r4ryU9zy7Zb3oXRWA",
     "region": "Var",
-    "type": "avis"
+    "type": "avis",
+    "kg": "/g/11zxnvqb_3",
+    "cid": "6921405937850434539"
   }
 ]
